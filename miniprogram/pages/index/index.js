@@ -1,0 +1,284 @@
+// pages/index/index.js
+var util = require('../../utils/utils');
+const app = getApp()
+const db = wx.cloud.database();
+const _ = db.command;
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    avatarUrl: '../../images/user-unlogin.png',
+    userInfo: {},
+    neworderarray: [],
+    hasrecentorder: false,
+    initstatus: 0, //0不加载  1加载访客 2加载被访人
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: async function () {
+
+    await getApp().getCloudOpenid()
+    console.log("openidstorage:" + app.globalData.openid)
+    // 1. 获取数据库引用
+
+
+
+    db.collection("PersonMgrInfo")
+      .where({
+        WxOpenid: app.globalData.openid
+      })
+      .get()
+      .then((res) => {
+        console.log('PersonMgrInfo');
+        console.log(res.data);
+        if (res.data.length > 0) {
+          if (res.data[0].ApproveStatus == 2) {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+            if (res.data[0].MsgReceviced == 0)
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被驳回',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                        console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+          } else if (res.data[0].ApproveStatus == 1) {
+            this.setData({
+              initstatus: 2
+            })
+
+            wx.setTabBarItem({
+              index: 0,
+              "text": "近期申请",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+
+
+            if (res.data[0].MsgReceviced == 0) {
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被通过',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                        console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+            }
+          } else {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+          }
+        } else {
+          this.setInitStatusOne()
+          wx.setTabBarItem({
+            index: 0,
+            "text": "访客预约",
+            // "iconPath": "images/temps/cam2.png",
+            // "selectedIconPath": "images/temps/cam3.png"
+          })
+
+        }
+      });
+
+
+
+    // 获取用户信息
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          wx.getUserInfo({
+            success: res => {
+              this.setData({
+                avatarUrl: res.userInfo.avatarUrl,
+                userInfo: res.userInfo
+              })
+              console.log(this.data.userInfo)
+            }
+          })
+        }
+      }
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+  buildNewOrder() {
+    wx.navigateTo({
+      url: '../neworder/neworder',
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        acceptDataFromOpenedPage: function (data) {
+          console.log(data)
+        },
+        someEvent: function (data) {
+          console.log(data)
+        }
+      },
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', {
+          data: 'test'
+        })
+      }
+    })
+  },
+  changetointerviewee() {
+    wx.navigateTo({
+      url: '../iminterviewee/iminterviewee',
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        acceptDataFromOpenedPage: function (data) {
+          console.log(data)
+        },
+        someEvent: function (data) {
+          console.log(data)
+        }
+      },
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', {
+          data: 'test'
+        })
+      }
+    })
+  },
+  getNewOrders() {
+    // 调用函数时，传入new Date()参数，返回值是日期和时间
+    var curdate = new Date();
+    // curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000*7);
+    var time = util.formatTime(curdate);
+    console.log(time)
+    db.collection("VisitorsInfo")
+      .where({
+        wxOpenid: app.globalData.openid,
+        createdtime: _.gte(time)
+      })
+      .get()
+      .then((res) => {
+        console.log("order")
+        console.log(res.data)
+        if (res.data.length > 0) {
+          this.setData({
+            hasrecentorder: true,
+            neworderarray: res.data
+          })
+        } else {
+          this.setData({
+            hasrecentorder: false,
+            neworderarray: []
+          })
+        }
+
+      }).catch(err => {
+        console.error(err)
+      });
+  },
+  setInitStatusOne() {
+
+    this.setData({
+      initstatus: 1
+    })
+    this.getNewOrders()
+  }
+
+})

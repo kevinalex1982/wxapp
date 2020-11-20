@@ -1,0 +1,49 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="index-hd">
+  <button plain open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar "
+      style="background-image: url({{avatarUrl}})" size="mini"></button>
+    <view class="index-desc">{{userInfo.nickName}}，欢迎使用微信访客预约程序 </view>
+
+  </view>
+ 
+  <view wx:if="{{initstatus ==1}}" class="recentorderinfo">
+    <view class="weui-panel weui-panel_access" wx:if="{{ hasrecentorder}}">
+            <view class="weui-panel__hd">有效预约</view>
+            <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="createdtime">
+                <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+                    <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                        <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
+                    </view>
+                    <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                        <view class="weui-media-box__title">{{item.bfrName}} 
+                          <text wx:if="{{item.approveStatus==0}}">(待审核)</text>
+                          <text wx:if="{{item.approveStatus==1}}">(通过审核)</text>
+                          <text wx:if="{{item.approveStatus==2}}">(被拒绝)</text>
+                        </view>
+                        <view class="weui-media-box__desc">将于{{item.createdtime}} 访问： {{item.bfrName}} 联系方式：{{item.bfrPhone}}</view>
+                    </view>
+                </navigator>
+              
+            </view>            
+        </view>
+    <!-- <view wx:if="{{ initstatus==1&& hasrecentorder}}" class="getorder"></view> -->
+    <view wx:if="{{  hasrecentorder==false}}" class="notgetorder">您在近三天没有预约信息</view>
+  </view>
+
+
+
+
+
+  <view wx:if="{{initstatus ==1 }}"  class="neworder">
+    <button  type="primary" bindtap="buildNewOrder">马上预约</button>
+  </view>
+  <view wx:if="{{initstatus ==1}}"  class="commontext">或者</view>
+  <view wx:if="{{initstatus ==1}}"   class="neworder">
+    <button type="primary"  bindtap="changetointerviewee">成为被访者</button>
+  </view>
+
+
+
+
+</view>

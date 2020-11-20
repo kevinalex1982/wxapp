@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/hisinfo/hisinfo",
+    "pages/neworder/neworder",
+    "pages/iminterviewee/iminterviewee"
+
+  ],
+  "tabBar": {
+   
+    "list": [{
+      "text":"访客预约",
+      "pagePath": "pages/index/index",
+      "iconPath": "images/temps/cam2.png",
+      "selectedIconPath": "images/temps/cam3.png"
+      
+    },{
+      "text":"申请记录",
+      "pagePath": "pages/hisinfo/hisinfo",
+      "iconPath": "images/temps/point-light-gray.png",
+      "selectedIconPath": "images/temps/point-light-blue.png"
+    }],
+    "color": "#000",
+    "selectedColor": "#00f"
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "访客预约",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "useExtendedLib": {
+    "weui": true
+  }
+}

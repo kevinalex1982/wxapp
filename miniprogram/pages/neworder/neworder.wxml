@@ -1,0 +1,148 @@
+<!--pages/neworder/neworder.wxml-->
+<import src="../common/head.wxml" />
+
+<view class="page" data-weui-theme="{{theme}}">
+  <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+
+  <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+
+    <mp-cells title="个人信息">
+      <mp-cell prop="name" title="姓名" ext-class="">
+        <input bindinput="formInputChange" data-field="name" class="weui-input" placeholder="请输入姓名" />
+      </mp-cell>
+      <mp-cell prop="corp" title="公司" ext-class="">
+        <input bindinput="formInputChange" data-field="corp" class="weui-input" placeholder="请输入公司" />
+      </mp-cell>
+
+      <mp-cell prop="mobile" title="手机号" ext-class=" ">
+        <input bindinput="formInputChange" data-field="mobile" type="number" class="weui-input" placeholder="请输入手机号" />
+
+      </mp-cell>
+
+      <mp-cell prop="idcard" title="身份证" ext-class="">
+        <input bindinput="formInputChange" class="weui-input" data-field="idcard" type="idcard"
+          placeholder="请输入您的身份证号码" />
+      </mp-cell>
+      <mp-cell title="人脸照片" ext-class="" >
+        <!-- <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+          files="{{files}}" max-count="1" title="人脸照片" tips="上传提示"></mp-uploader> -->
+          <image class="personimg" bindtap='changeBigImg'  src='{{bigImg}}'></image>
+      </mp-cell>
+     <view class="tip-text-1">照片需包含人脸，否则无法审核</view> 
+      <mp-cell prop="date" title="访问日期" ext-class="">
+        <picker data-field="date" mode="date" value="{{date}}" bindchange="bindDateChange">
+          <view class="weui-input">{{date}}</view>
+        </picker>
+      </mp-cell>
+
+    </mp-cells>
+
+
+    <mp-cells title="被访人信息">
+      <mp-cell prop="bfrname" title="被访人姓名" ext-class="">
+        <input bindinput="formInputChange" data-field="bfrname" class="weui-input" placeholder="请输入被访人姓名" />
+      </mp-cell>
+
+
+      <mp-cell prop="bfrmobile" title="被访人手机号" ext-class=" ">
+        <input bindinput="formInputChange" data-field="bfrmobile" type="number" class="weui-input"
+          placeholder="请输入被访人手机号" />
+
+      </mp-cell>
+    </mp-cells>
+
+  </mp-form>
+
+  <view slot="button">
+    <button class="weui-btn" type="primary" bindtap="submitForm">提交申请</button>
+  </view>
+
+</view>
+<!-- <view class="container">
+
+  <template is="head" data="{{title: '个人信息'}}" />
+  <view class="page-body">
+    <view class="page-section">
+      <view class="weui-cells__title">姓名</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" auto-focus placeholder="请输入您的姓名" />
+        </view>
+      </view>
+    </view>
+    <view class="page-section">
+      <view class="weui-cells__title">所在公司</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="请输入您的公司名称" />
+        </view>
+      </view>
+    </view>
+    <view class="page-section">
+      <view class="weui-cells__title">身份证</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" type="idcard" placeholder="请输入您的身份证号码" />
+        </view>
+      </view>
+    </view>
+
+    <view class="page-section">
+      <view class="weui-cells__title">邀请码</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" type="number" placeholder="请输入邀请码" />
+        </view>
+      </view>
+    </view>
+
+    <view class="page-section">
+      <view class="weui-cells__title">手机号码</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" type="number" placeholder="请输入您的手机号" />
+        </view>
+      </view>
+    </view>
+
+    <template is="head" data="{{title: '被访人信息'}}" />
+
+    <view class="page-section">
+      <view class="weui-cells__title">被访人姓名</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" placeholder="请输入被访人姓名" />
+        </view>
+      </view>
+    </view>
+
+    <view class="page-section">
+      <view class="weui-cells__title">被访人手机号码</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <input class="weui-input" type="number" placeholder="请输入被访人手机号" />
+        </view>
+      </view>
+    </view>
+
+    <view class="page-section">
+      <view class="weui-cells__title">请选择访问日期</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">当前选择</view>
+          </view>
+          <view class="weui-cell__bd">
+            <picker mode="date" value="{{date}}"  bindchange="bindDateChange">
+              <view class="weui-input">{{date}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="page-section">
+      <button type="primary" bindtap="notuse">提交申请</button>
+    </view>
+
+  </view>
+</view> -->
