@@ -14,6 +14,7 @@ Page({
     neworderarray: [],
     hasrecentorder: false,
     initstatus: 0, //0不加载  1加载访客 2加载被访人
+    showed:false
   },
 
   /**
@@ -21,124 +22,19 @@ Page({
    */
   onLoad: async function () {
 
+console.log("onload")
+
     await getApp().getCloudOpenid()
-    console.log("openidstorage:" + app.globalData.openid)
+    //console.log("openidstorage:" + app.globalData.openid)
     // 1. 获取数据库引用
 
-
-
-    db.collection("PersonMgrInfo")
-      .where({
-        WxOpenid: app.globalData.openid
-      })
-      .get()
-      .then((res) => {
-        console.log('PersonMgrInfo');
-        console.log(res.data);
-        if (res.data.length > 0) {
-          if (res.data[0].ApproveStatus == 2) {
-            this.setInitStatusOne()
-            wx.setTabBarItem({
-              index: 0,
-              "text": "访客预约",
-              // "iconPath": "images/temps/cam2.png",
-              // "selectedIconPath": "images/temps/cam3.png"
-            })
-            if (res.data[0].MsgReceviced == 0)
-              wx.showModal({
-                title: '提示',
-                content: '您之前成为被访者的申请已被驳回',
-                showCancel: false,
-                success(resmodal) {
-                  if (resmodal.confirm) {
-
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
-                      })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
-
-                  }
-                }
-              })
-          } else if (res.data[0].ApproveStatus == 1) {
-            this.setData({
-              initstatus: 2
-            })
-
-            wx.setTabBarItem({
-              index: 0,
-              "text": "近期申请",
-              // "iconPath": "images/temps/cam2.png",
-              // "selectedIconPath": "images/temps/cam3.png"
-            })
-
-
-            if (res.data[0].MsgReceviced == 0) {
-              wx.showModal({
-                title: '提示',
-                content: '您之前成为被访者的申请已被通过',
-                showCancel: false,
-                success(resmodal) {
-                  if (resmodal.confirm) {
-
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
-                      })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
-
-                  }
-                }
-              })
-            }
-          } else {
-            this.setInitStatusOne()
-            wx.setTabBarItem({
-              index: 0,
-              "text": "访客预约",
-              // "iconPath": "images/temps/cam2.png",
-              // "selectedIconPath": "images/temps/cam3.png"
-            })
-          }
-        } else {
-          this.setInitStatusOne()
-          wx.setTabBarItem({
-            index: 0,
-            "text": "访客预约",
-            // "iconPath": "images/temps/cam2.png",
-            // "selectedIconPath": "images/temps/cam3.png"
-          })
-
-        }
-      });
-
-
-
+    this.getDataInit()
+   
     // 获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
+          // console.log("logined")
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({
             success: res => {
@@ -146,9 +42,12 @@ Page({
                 avatarUrl: res.userInfo.avatarUrl,
                 userInfo: res.userInfo
               })
-              console.log(this.data.userInfo)
+             // console.log(this.data.userInfo)
             }
           })
+        }else
+        {
+          console.log("notlogined")
         }
       }
     })
@@ -158,42 +57,52 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log("onReady")
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log("onShow")
+    if(this.data.showed == false)
+    {
+    
+      this.setData({
+        showed:true
+      })
+    }else{
+      this.getDataRefresh()
+    }
+   
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log("onHide")
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    console.log("onUnload")
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("onPullDownRefresh")
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log("onReachBottom")
   },
 
   /**
@@ -245,14 +154,15 @@ Page({
   getNewOrders() {
     // 调用函数时，传入new Date()参数，返回值是日期和时间
     var curdate = new Date();
-    // curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000*7);
+  curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000*5);
     var time = util.formatTime(curdate);
-    console.log(time)
+    //console.log(time)
     db.collection("VisitorsInfo")
       .where({
         wxOpenid: app.globalData.openid,
         createdtime: _.gte(time)
-      })
+      })  
+       .orderBy("createdtime","asc")      
       .get()
       .then((res) => {
         console.log("order")
@@ -279,6 +189,233 @@ Page({
       initstatus: 1
     })
     this.getNewOrders()
+  },onGetUserInfo(e) {
+    console.log(e);
+    if (e.detail.userInfo) {
+      this.setData({
+      
+        avatarUrl: e.detail.userInfo.avatarUrl,
+        userInfo: e.detail.userInfo
+      })
+    }
+  },getDataInit(){
+    console.log('getDataInit')
+   
+    db.collection("PersonMgrInfo")
+      .where({
+        WxOpenid: app.globalData.openid
+      })
+   
+      .get()
+      .then((res) => {
+       
+        //console.log(res.data);
+        if (res.data.length > 0) {
+          if (res.data[0].ApproveStatus == 2) {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+            if (res.data[0].MsgReceviced == 0)
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被驳回',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                       // console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+          } else if (res.data[0].ApproveStatus == 1) {
+            this.setData({
+              initstatus: 2
+            })
+
+            wx.setTabBarItem({
+              index: 0,
+              "text": "近期申请",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+
+
+            if (res.data[0].MsgReceviced == 0) {
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被通过',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                       // console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+            }
+          } else {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+          }
+        } else {
+          this.setInitStatusOne()
+          wx.setTabBarItem({
+            index: 0,
+            "text": "访客预约",
+            // "iconPath": "images/temps/cam2.png",
+            // "selectedIconPath": "images/temps/cam3.png"
+          })
+
+        }
+      });
+  },getDataRefresh(){
+   
+    console.log('getDataRefresh')
+    db.collection("PersonMgrInfo")
+      .where({
+        WxOpenid: app.globalData.openid
+      })
+   
+      .get()
+      .then((res) => {
+       
+        //console.log(res.data);
+        if (res.data.length > 0) {
+          if (res.data[0].ApproveStatus == 2) {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+            if (res.data[0].MsgReceviced == 0)
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被驳回',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                       // console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+          } else if (res.data[0].ApproveStatus == 1) {
+            this.setData({
+              initstatus: 2
+            })
+
+            wx.setTabBarItem({
+              index: 0,
+              "text": "近期申请",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+
+
+            if (res.data[0].MsgReceviced == 0) {
+              wx.showModal({
+                title: '提示',
+                content: '您之前成为被访者的申请已被通过',
+                showCancel: false,
+                success(resmodal) {
+                  if (resmodal.confirm) {
+
+                    db.collection('PersonMgrInfo').where({
+                        WxOpenid: app.globalData.openid
+                      })
+                      .update({
+                        data: {
+                          MsgReceviced: 1
+                        },
+                      })
+                      .then((resupd) => {
+                       // console.log(resupd)
+                        console.log('更新已读状态成功')
+                      })
+                      .catch((err) => {
+                        console.error('更新已读状态失败' + err)
+                      })
+
+                  }
+                }
+              })
+            }
+          } else {
+            this.setInitStatusOne()
+            wx.setTabBarItem({
+              index: 0,
+              "text": "访客预约",
+              // "iconPath": "images/temps/cam2.png",
+              // "selectedIconPath": "images/temps/cam3.png"
+            })
+          }
+        } else {
+          this.setInitStatusOne()
+          wx.setTabBarItem({
+            index: 0,
+            "text": "访客预约",
+            // "iconPath": "images/temps/cam2.png",
+            // "selectedIconPath": "images/temps/cam3.png"
+          })
+
+        }
+      });
   }
 
 })

@@ -31,7 +31,7 @@ padding-bottom: 50rpx;
 }
 
 .recentorderinfo{
-  padding-top: 5rpx;
+  padding-top: 15rpx;
   
 }
 .getorder{
@@ -54,6 +54,11 @@ padding-bottom: 50rpx;
 }
 
 .neworder{
+  width: 60%;
+  margin-top: 50rpx;
+
+}
+.changetobfr{
   width: 60%;
   margin-top: 30rpx;
 
