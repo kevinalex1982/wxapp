@@ -1,2 +1,26 @@
 <!--pages/hisinfo/hisinfo.wxml-->
-<text>pages/hisinfo/hisinfo.wxml</text>
+<view class="container">
+  <view class="recentorderinfo">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">申请记录</view>
+      <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="_id">
+        <mp-slideview buttons="{{item.slideButtons}}" icon="{{true}}" bindbuttontap="slideButtonTap">
+          <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">{{item.bfrName}}
+                <text wx:if="{{item.approveStatus==0}}">(待审核)</text>
+                <text wx:if="{{item.approveStatus==1}}">(通过审核)</text>
+                <text wx:if="{{item.approveStatus==2}}">(被拒绝)</text>
+              </view>
+              <view class="weui-media-box__desc">将于{{item.createdtime}} 访问： {{item.bfrName}} 联系方式：{{item.bfrPhone}}
+              </view>
+            </view>
+          </navigator>
+        </mp-slideview>
+      </view>
+    </view>
+  </view>
+</view>

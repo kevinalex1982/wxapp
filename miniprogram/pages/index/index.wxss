@@ -74,3 +74,15 @@ padding-bottom: 50rpx;
   /* font-size: 14px; */
   font-size: 14px;
 }
+
+.weui-slidecells {
+  margin:8px;
+}
+
+.weui-slidecell {
+  background-color: var(--weui-BG-2);
+  border-radius: 8px;
+  padding: 26px;
+  line-height: 1.4;
+  font-size: 17px;
+}

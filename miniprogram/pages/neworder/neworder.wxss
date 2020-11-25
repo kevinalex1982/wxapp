@@ -17,6 +17,7 @@ page {
   color: var(--weui-FG-0);
   display: flex;
   justify-content: center;
+  padding-bottom: 50px;
 }
 page>view {
   width: 100vw;

@@ -15,7 +15,10 @@ App({
       })
     }
 
-    this.globalData = {openid:""}
+    this.globalData = {
+      openid:"",
+      bfrinfo:[]
+    }
   },getCloudOpenid: async function () {
     return this.globalData.openid = this.globalData.openid || (await wx.cloud.callFunction({name: 'login'})).result.openid
   },

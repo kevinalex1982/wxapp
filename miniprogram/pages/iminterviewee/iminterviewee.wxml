@@ -1,2 +1,36 @@
 <!--pages/iminterviewee/iminterviewee.wxml-->
-<text>pages/iminterviewee/iminterviewee.wxml</text>
+<!--pages/neworder/neworder.wxml-->
+<import src="../common/head.wxml" />
+
+<view class="page" data-weui-theme="{{theme}}">
+  <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+
+  <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+
+    <mp-cells title="个人信息">
+      <mp-cell prop="name" title="姓名" ext-class="">
+        <input bindinput="formInputChange" value="{{formData.name}}" data-field="name" class="weui-input" placeholder="请输入姓名" />
+      </mp-cell>
+    
+
+      <mp-cell prop="mobile" title="手机号" ext-class=" ">
+        <input bindinput="formInputChange" data-field="mobile" value="{{formData.mobile}}"  type="number" class="weui-input" placeholder="请输入手机号" />
+
+      </mp-cell>
+    
+      <mp-cell prop="verifycode" title="邀请码" ext-class=" ">
+        <input bindinput="formInputChange" data-field="verifycode" value="{{formData.verifycode}}"  class="weui-input" placeholder="请输入邀请码" />
+
+      </mp-cell>
+
+    </mp-cells>
+   
+
+  </mp-form>
+
+  <view slot="button">
+    <button class="weui-btn" type="primary" bindtap="submitForm">提交申请</button>
+  </view>
+
+</view>
+

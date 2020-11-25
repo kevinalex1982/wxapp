@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText":"微信访客预约",
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-slideview": "weui-miniprogram/slideview/slideview"
+  }
 }

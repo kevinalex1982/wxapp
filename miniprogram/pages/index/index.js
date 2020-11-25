@@ -1,5 +1,7 @@
 // pages/index/index.js
 var util = require('../../utils/utils');
+
+var base64 = require("../../images/sliderleft/base64");
 const app = getApp()
 const db = wx.cloud.database();
 const _ = db.command;
@@ -14,22 +16,27 @@ Page({
     neworderarray: [],
     hasrecentorder: false,
     initstatus: 0, //0不加载  1加载访客 2加载被访人
-    showed:false
+    showed: false,
+    BFRApprvestatus: -1
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function () {
-
-console.log("onload")
+    wx.showLoading({
+      title: '加载中',
+    })
+    console.log("onload")
 
     await getApp().getCloudOpenid()
+
+
     //console.log("openidstorage:" + app.globalData.openid)
     // 1. 获取数据库引用
 
     this.getDataInit()
-   
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -42,15 +49,15 @@ console.log("onload")
                 avatarUrl: res.userInfo.avatarUrl,
                 userInfo: res.userInfo
               })
-             // console.log(this.data.userInfo)
+              // console.log(this.data.userInfo)
             }
           })
-        }else
-        {
+        } else {
           console.log("notlogined")
         }
       }
     })
+    wx.hideLoading()
   },
 
   /**
@@ -65,16 +72,15 @@ console.log("onload")
    */
   onShow: function () {
     console.log("onShow")
-    if(this.data.showed == false)
-    {
-    
+    if (this.data.showed == false) {
+
       this.setData({
-        showed:true
+        showed: true
       })
-    }else{
+    } else {
       this.getDataRefresh()
     }
-   
+
   },
 
   /**
@@ -132,42 +138,86 @@ console.log("onload")
     })
   },
   changetointerviewee() {
-    wx.navigateTo({
-      url: '../iminterviewee/iminterviewee',
-      events: {
-        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-        acceptDataFromOpenedPage: function (data) {
-          console.log(data)
+    if (this.data.BFRApprvestatus == -1) {
+      wx.navigateTo({
+        url: '../iminterviewee/iminterviewee?optype=add',
+        events: {
+          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+          acceptDataFromOpenedPage: function (data) {
+            console.log(data)
+          },
+          someEvent: function (data) {
+            console.log(data)
+          }
         },
-        someEvent: function (data) {
-          console.log(data)
+        success: function (res) {
+          // 通过eventChannel向被打开页面传送数据
+          res.eventChannel.emit('acceptDataFromOpenerPage', {
+            data: 'test'
+          })
         }
-      },
-      success: function (res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', {
-          data: 'test'
-        })
-      }
-    })
+      })
+    } else if (this.data.BFRApprvestatus == 0) {
+      wx.showModal({
+        title: '提示',
+        content: '您之前成为被访者的申请还未被处理',
+        showCancel: false,
+        success(resmodal) {
+          if (resmodal.confirm) {
+
+          }
+        }
+      })
+    } else if (this.data.BFRApprvestatus == 2) {
+      wx.navigateTo({
+        url: '../iminterviewee/iminterviewee?optype=upd',
+        events: {
+          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+          acceptDataFromOpenedPage: function (data) {
+            console.log(data)
+          },
+          someEvent: function (data) {
+            console.log(data)
+          }
+        },
+        success: function (res) {
+          // 通过eventChannel向被打开页面传送数据
+          res.eventChannel.emit('acceptDataFromOpenerPage', {
+            data: 'test'
+          })
+        }
+      })
+    }
   },
   getNewOrders() {
     // 调用函数时，传入new Date()参数，返回值是日期和时间
     var curdate = new Date();
-  curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000*5);
+
+    curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000 * 5);
     var time = util.formatTime(curdate);
     //console.log(time)
     db.collection("VisitorsInfo")
       .where({
         wxOpenid: app.globalData.openid,
         createdtime: _.gte(time)
-      })  
-       .orderBy("createdtime","asc")      
+      })
+      .orderBy("createdtime", "asc")
       .get()
       .then((res) => {
         console.log("order")
         console.log(res.data)
         if (res.data.length > 0) {
+
+
+          for (let item of res.data) {
+            item.slideButtons = [{ // 这里我只设置了一个按键
+              type: 'warn',
+              text: '删除',
+              extClass: 'test',
+              src: '/images/sliderleft/icon_del.svg', // icon的路径
+              data: item._id
+            }];
+          }
           this.setData({
             hasrecentorder: true,
             neworderarray: res.data
@@ -189,28 +239,36 @@ console.log("onload")
       initstatus: 1
     })
     this.getNewOrders()
-  },onGetUserInfo(e) {
+  },
+  onGetUserInfo(e) {
     console.log(e);
     if (e.detail.userInfo) {
       this.setData({
-      
+
         avatarUrl: e.detail.userInfo.avatarUrl,
         userInfo: e.detail.userInfo
       })
     }
-  },getDataInit(){
+  },
+  getDataInit() {
     console.log('getDataInit')
-   
+
     db.collection("PersonMgrInfo")
       .where({
         WxOpenid: app.globalData.openid
       })
-   
+
       .get()
       .then((res) => {
-       
+
         //console.log(res.data);
         if (res.data.length > 0) {
+          this.setData({
+            BFRApprvestatus: res.data[0].ApproveStatus
+          })
+          app.globalData.bfrinfo = res.data[0]
+          // console.log("app.globalData.bfrinfo")
+          // console.log(app.globalData.bfrinfo)
           if (res.data[0].ApproveStatus == 2) {
             this.setInitStatusOne()
             wx.setTabBarItem({
@@ -236,7 +294,7 @@ console.log("onload")
                         },
                       })
                       .then((resupd) => {
-                       // console.log(resupd)
+                        // console.log(resupd)
                         console.log('更新已读状态成功')
                       })
                       .catch((err) => {
@@ -276,7 +334,7 @@ console.log("onload")
                         },
                       })
                       .then((resupd) => {
-                       // console.log(resupd)
+                        // console.log(resupd)
                         console.log('更新已读状态成功')
                       })
                       .catch((err) => {
@@ -307,19 +365,25 @@ console.log("onload")
 
         }
       });
-  },getDataRefresh(){
-   
+  },
+  getDataRefresh() {
+
     console.log('getDataRefresh')
     db.collection("PersonMgrInfo")
       .where({
         WxOpenid: app.globalData.openid
       })
-   
+
       .get()
       .then((res) => {
-       
+
         //console.log(res.data);
         if (res.data.length > 0) {
+          this.setData({
+            BFRApprvestatus: res.data[0].ApproveStatus
+          })
+          app.globalData.bfrinfo = res.data[0]
+
           if (res.data[0].ApproveStatus == 2) {
             this.setInitStatusOne()
             wx.setTabBarItem({
@@ -345,7 +409,7 @@ console.log("onload")
                         },
                       })
                       .then((resupd) => {
-                       // console.log(resupd)
+                        // console.log(resupd)
                         console.log('更新已读状态成功')
                       })
                       .catch((err) => {
@@ -385,7 +449,7 @@ console.log("onload")
                         },
                       })
                       .then((resupd) => {
-                       // console.log(resupd)
+                        // console.log(resupd)
                         console.log('更新已读状态成功')
                       })
                       .catch((err) => {
@@ -416,6 +480,51 @@ console.log("onload")
 
         }
       });
+  },
+  slideButtonTap(e) {
+    console.log('slide button tap', e.detail.index)
+    console.log('slide button tap', e.detail.data)
+    const that = this
+
+    wx.showModal({
+      title: '提示',
+      cancelText: '关闭',
+      confirmText: '确定撤销',
+      confirmColor: '#ff0000',
+      content: '确定要取消申请吗？',
+      success(res) {
+        if (res.confirm) {
+          db.collection('VisitorsInfo').doc(e.detail.data).remove()
+            .then((resdel) => {
+              wx.showModal({
+                title: '提示',
+                content: '撤销成功',
+                showCancel: false,
+                success(res) {
+
+                  if (res.confirm) {
+                    that.getDataRefresh()
+                  }
+                }
+              })
+            })
+            .catch((err) => {
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                content: '撤销失败，' + err,
+                success(res) {
+                  if (res.confirm) {
+
+                  }
+                }
+              })
+            })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   }
 
 })
