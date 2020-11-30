@@ -5,6 +5,8 @@ var base64 = require("../../images/sliderleft/base64");
 const app = getApp()
 const db = wx.cloud.database();
 const _ = db.command;
+
+
 Page({
 
   /**
@@ -24,6 +26,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function () {
+
     wx.showLoading({
       title: '加载中',
     })
@@ -57,7 +60,9 @@ Page({
         }
       }
     })
-    wx.hideLoading()
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 4000)
   },
 
   /**
@@ -193,7 +198,7 @@ Page({
     // 调用函数时，传入new Date()参数，返回值是日期和时间
     var curdate = new Date();
 
-    curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000 * 5);
+    // curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000 * 5);
     var time = util.formatTime(curdate);
     //console.log(time)
     db.collection("VisitorsInfo")
@@ -206,6 +211,7 @@ Page({
       .then((res) => {
         console.log("order")
         console.log(res.data)
+        wx.hideLoading()
         if (res.data.length > 0) {
 
 
@@ -251,6 +257,7 @@ Page({
     }
   },
   getDataInit() {
+    var that=this
     console.log('getDataInit')
 
     db.collection("PersonMgrInfo")
@@ -277,7 +284,7 @@ Page({
               // "iconPath": "images/temps/cam2.png",
               // "selectedIconPath": "images/temps/cam3.png"
             })
-            if (res.data[0].MsgReceviced == 0)
+            if (res.data[0].MsgReceviced == 0) {
               wx.showModal({
                 title: '提示',
                 content: '您之前成为被访者的申请已被驳回',
@@ -285,29 +292,39 @@ Page({
                 success(resmodal) {
                   if (resmodal.confirm) {
 
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
+                    const mgrid = res.data[0]._id
+                    delete res.data[0]["_id"]          
+                    res.data[0].MsgReceviced =1
+                    console.log(res.data[0])
+                    db.collection('PersonMgrInfo').doc(mgrid).set({
+                      data: res.data[0]
+                    }).then(resupd => {
+                      wx.showModal({
+                        title: '提示',
+                        content: "resupd",
+                        showCancel: false,
+                        success(res1) {
+
+                       
+                        }
                       })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        // console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
+                      console.log('更新已读状态成功')
+                    }).catch(err => {
+                      console.error('更新已读状态失败' + err)
+                     
+                    })
 
                   }
                 }
               })
+            }
           } else if (res.data[0].ApproveStatus == 1) {
             this.setData({
               initstatus: 2
             })
+
+
+
 
             wx.setTabBarItem({
               index: 0,
@@ -318,6 +335,7 @@ Page({
 
 
             if (res.data[0].MsgReceviced == 0) {
+
               wx.showModal({
                 title: '提示',
                 content: '您之前成为被访者的申请已被通过',
@@ -325,21 +343,28 @@ Page({
                 success(resmodal) {
                   if (resmodal.confirm) {
 
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
+                    const mgrid = res.data[0]._id
+                    delete res.data[0]["_id"]          
+                    res.data[0].MsgReceviced =1
+                    console.log(res.data[0])
+                    db.collection('PersonMgrInfo').doc(mgrid).set({
+                      data: res.data[0]
+                    }).then(resupd => {
+                      wx.showModal({
+                        title: '提示',
+                        content: "resupd",
+                        showCancel: false,
+                        success(res1) {
+
+                       
+                        }
                       })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        // console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
+                      console.log('更新已读状态成功')
+                    }).catch(err => {
+                      console.error('更新已读状态失败' + err)
+                     
+                    })
+
 
                   }
                 }
@@ -400,21 +425,27 @@ Page({
                 success(resmodal) {
                   if (resmodal.confirm) {
 
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
+                    const mgrid = res.data[0]._id
+                    delete res.data[0]["_id"]          
+                    res.data[0].MsgReceviced =1
+                    console.log(res.data[0])
+                    db.collection('PersonMgrInfo').doc(mgrid).set({
+                      data: res.data[0]
+                    }).then(resupd => {
+                      wx.showModal({
+                        title: '提示',
+                        content: "resupd",
+                        showCancel: false,
+                        success(res1) {
+
+                       
+                        }
                       })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        // console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
+                      console.log('更新已读状态成功')
+                    }).catch(err => {
+                      console.error('更新已读状态失败' + err)
+                     
+                    })
 
                   }
                 }
@@ -440,21 +471,27 @@ Page({
                 success(resmodal) {
                   if (resmodal.confirm) {
 
-                    db.collection('PersonMgrInfo').where({
-                        WxOpenid: app.globalData.openid
+                    const mgrid = res.data[0]._id
+                    delete res.data[0]["_id"]          
+                    res.data[0].MsgReceviced =1
+                    console.log(res.data[0])
+                    db.collection('PersonMgrInfo').doc(mgrid).set({
+                      data: res.data[0]
+                    }).then(resupd => {
+                      wx.showModal({
+                        title: '提示',
+                        content: "resupd",
+                        showCancel: false,
+                        success(res1) {
+
+                       
+                        }
                       })
-                      .update({
-                        data: {
-                          MsgReceviced: 1
-                        },
-                      })
-                      .then((resupd) => {
-                        // console.log(resupd)
-                        console.log('更新已读状态成功')
-                      })
-                      .catch((err) => {
-                        console.error('更新已读状态失败' + err)
-                      })
+                      console.log('更新已读状态成功')
+                    }).catch(err => {
+                      console.error('更新已读状态失败' + err)
+                     
+                    })
 
                   }
                 }
@@ -523,6 +560,84 @@ Page({
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
+      }
+    })
+  },
+  longpress(e) {
+    console.log(e.currentTarget.id)
+    console.log(e)
+
+    const that = this
+
+    wx.showModal({
+      title: '提示',
+      cancelText: '关闭',
+      confirmText: '确定撤销',
+      confirmColor: '#ff0000',
+      content: '确定要取消申请吗？',
+      success(res) {
+        if (res.confirm) {
+          db.collection('VisitorsInfo').doc(e.currentTarget.id).remove()
+            .then((resdel) => {
+              wx.showModal({
+                title: '提示',
+                content: '撤销成功',
+                showCancel: false,
+                success(res) {
+
+                  if (res.confirm) {
+                    that.getDataRefresh()
+                  }
+                }
+              })
+            })
+            .catch((err) => {
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                content: '撤销失败，' + err,
+                success(res) {
+                  if (res.confirm) {
+
+                  }
+                }
+              })
+            })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  sendmsg() {
+
+
+    wx.cloud.callFunction({
+      // 要调用的云函数名称
+      name: 'sendMsgToBfr',
+      // 传递给云函数的event参数
+      data: {
+        wxopenid: 'oO80M480dnzdPMwWH_Qc-xNq9xtA',
+        personname: '陈建军',
+        requesttime: '2020-11-30 18:22:23'
+      }
+    }).then(res => {
+      console.log(res)
+      // output: res.result === 3
+    }).catch(err => {
+      console.log(err)
+      // handle error
+    })
+  },
+  subscribemsg() {
+
+    wx.requestSubscribeMessage({
+      tmplIds: ['zT41ZSW058Iag1XW_-qzkTMEGGZa53A5vgKJ4YVIvIA'],
+      success(res) {
+        console.log(res)
+      },
+      fail(error) {
+        console.log(error)
       }
     })
   }

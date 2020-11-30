@@ -10,13 +10,13 @@
   <view wx:if="{{initstatus ==1}}" class="recentorderinfo">
     <view class="weui-panel weui-panel_access" wx:if="{{ hasrecentorder}}">
       <view class="weui-panel__hd">有效预约</view>
-      <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="_id">
-        <mp-slideview buttons="{{item.slideButtons}}" icon="{{true}}" bindbuttontap="slideButtonTap">
+      <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="_id"  >
+        <mp-slideview >
           <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
             <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
               <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
             </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" bindlongtap="longpress" id="{{item._id}}" >
               <view class="weui-media-box__title">{{item.bfrName}}
                 <text wx:if="{{item.approveStatus==0}}">(待审核)</text>
                 <text wx:if="{{item.approveStatus==1}}">(通过审核)</text>
@@ -39,14 +39,17 @@
 
 
   <view wx:if="{{initstatus ==1 }}" class="neworder">
-    <button type="primary" bindtap="buildNewOrder">马上预约</button>
+    <button type="primary" bindtap="buildNewOrder">预约</button>
   </view>
-  <view wx:if="{{initstatus ==1}}" class="commontext">或者</view>
+
   <view wx:if="{{initstatus ==1}}" class="changetobfr">
-    <button type="primary" bindtap="changetointerviewee">成为被访者</button>
+    <button type="primary" bindtap="changetointerviewee">我是被访者</button>
   </view>
 
-
-
-
+  <view wx:if="{{initstatus ==1}}" class="changetobfr">
+    <button type="primary" bindtap="sendmsg">测试消息</button>
+  </view>
+  <view wx:if="{{initstatus ==2}}" class="changetobfr">
+    <button type="primary" bindtap="subscribemsg">订阅审批消息(只能一次)</button>
+  </view>
 </view>
