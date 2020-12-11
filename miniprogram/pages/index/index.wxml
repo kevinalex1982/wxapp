@@ -45,11 +45,13 @@
   <view wx:if="{{initstatus ==1}}" class="changetobfr">
     <button type="primary" bindtap="changetointerviewee">我是被访者</button>
   </view>
-
-  <view wx:if="{{initstatus ==1}}" class="changetobfr">
+  <view class="changetobfr">
     <button type="primary" bindtap="sendmsg">测试消息</button>
   </view>
+  <!-- <view wx:if="{{initstatus ==1}}" class="changetobfr">
+    <button type="primary" bindtap="sendmsg">测试消息</button>
+  </view> -->
   <view wx:if="{{initstatus ==2}}" class="changetobfr">
-    <button type="primary" bindtap="subscribemsg">订阅审批消息(只能一次)</button>
+    <button type="primary" bindtap="subscribemsgbfr">订阅消息</button>
   </view>
 </view>

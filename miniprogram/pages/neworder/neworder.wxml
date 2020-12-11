@@ -54,7 +54,9 @@
   </mp-form>
 
   <view slot="button">
-    <button class="weui-btn" type="primary" bindtap="submitForm">提交申请</button>
+    <button wx:if="{{isinputvalid}}" class="weui-btn" type="primary" bindtap="subscribemsgvisitor">提交申请</button>
+    <button class="weui-btn" type="primary" bindtap="validInput">校验输入</button>
+ 
   </view>
 
 </view>

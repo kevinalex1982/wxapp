@@ -10,6 +10,7 @@ Page({
     date: '2020-11-01',
     bigImg: '../../images/plus.png', //默认图片，设置为空也可以
     selImgCloudID: '',
+    isinputvalid:false,
     formData: {
 
     },
@@ -113,7 +114,8 @@ Page({
     var time = util.formatTime(curdate);
     // 再通过setData更改Page()里面的data，动态更新页面的数据
     this.setData({
-      date: time
+      date: time,
+      isinputvalid:false
     });
 
 
@@ -175,75 +177,65 @@ Page({
   },
   submitForm() {
     let that = this;
-    this.selectComponent('#form').validate((valid, errors) => {
-      console.log('valid', valid, errors)
-      if (!valid) {
-        const firstError = Object.keys(errors)
-        if (firstError.length) {
-          this.setData({
-            error: errors[firstError[0]].message
-          })
 
-        }
-      } else {
-        //把图片存到users集合表
-        const db = wx.cloud.database();
-        console.log("that.selImgCloudID")
-        console.log(that.data.selImgCloudID)
-        if (that.selImgCloudID == '') {
-          wx.showToast({
-            title: '必须选择照片',
-            'icon': 'none',
-            duration: 3000
-          })
-        } else {
-          var senddata ={
-            wxOpenid: app.globalData.openid,
-            createdtime: that.data.date,
-            personName: that.data.formData.name,
-            personCorp: that.data.formData.corp,
-            personPhone: that.data.formData.mobile,
-            personIdcard: that.data.formData.idcard,
-            personImgCloudID: that.data.selImgCloudID,
-            bfrName: that.data.formData.bfrname,
-            bfrPhone: that.data.formData.bfrmobile,
-            approveStatus: 0
+    //把图片存到users集合表
+    const db = wx.cloud.database();
+    console.log("that.selImgCloudID")
+    console.log(that.data.selImgCloudID)
+    if (that.selImgCloudID == '') {
+      wx.showToast({
+        title: '必须选择照片',
+        'icon': 'none',
+        duration: 3000
+      })
+    } else {
+      var senddata = {
+        wxOpenid: app.globalData.openid,
+        createdtime: that.data.date,
+        personName: that.data.formData.name,
+        personCorp: that.data.formData.corp,
+        personPhone: that.data.formData.mobile,
+        personIdcard: that.data.formData.idcard,
+        personImgCloudID: that.data.selImgCloudID,
+        bfrName: that.data.formData.bfrname,
+        bfrPhone: that.data.formData.bfrmobile,
+        approveStatus: 0
 
-          };
-          console.log("senddata")
-          console.log(senddata)
-          db.collection("VisitorsInfo").add({
-            data: senddata,
-            success: function () {
-              wx.showModal({
-                title: '提示',
-                content: '申请成功',
-                showCancel: false,
-                success (res) {
-                  if (res.confirm) {
-                    wx.navigateBack();
-                  } 
-                }
-              })
-            
-            },
-            fail: function () {
-              wx.showModal({
-                title: '提示',
-                showCancel: false,
-                content: '申请失败',
-                success (res) {
-                  if (res.confirm) {
-                   
-                  } 
-                }
-              })
+      };
+      console.log("senddata")
+      console.log(senddata)
+      db.collection("VisitorsInfo").add({
+        data: senddata,
+        success: function () {
+          wx.showModal({
+            title: '提示',
+            content: '申请成功',
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                wx.navigateBack();
+              }
             }
-          });
+          })
 
+        },
+        fail: function () {
+          wx.showModal({
+            title: '提示',
+            showCancel: false,
+            content: '申请失败',
+            success(res) {
+              if (res.confirm) {
+
+              }
+            }
+          })
         }
-      }
-    })
+      });
+
+    }
+
+
     // this.selectComponent('#form').validateField('mobile', (valid, errors) => {
     //     console.log('valid', valid, errors)
     // })
@@ -254,6 +246,88 @@ Page({
     } = e.currentTarget.dataset
     this.setData({
       [`formData.${field}`]: e.detail.value
+    })
+  },
+  subscribemsgvisitor() {
+    const that = this
+        wx.requestSubscribeMessage({
+          tmplIds: ['vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg'],
+          success(res) {
+            console.log('success')
+            console.log(res)
+            if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "accept") {
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                content: '您已经订阅了消息，等待批复后得到消息',
+                success(res) {
+                  if (res.confirm) {
+                    that.submitForm()
+                  }
+                }
+              })
+            } else if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "reject") {
+              wx.showModal({
+                title: '提示',
+                showCancel: false,
+                content: '您选择不订阅消息，请注意查看批复',
+                success(res) {
+                  if (res.confirm) {
+                    that.submitForm()
+                  }
+                }
+              })
+            }
+          },
+          fail(error) {
+            console.log('error')
+            console.log(error)
+            wx.showModal({
+              title: '提示',
+              showCancel: false,
+              content: '订阅消息出错，请注意手动查看批复',
+              success(res) {
+                if (res.confirm) {
+                  that.submitForm()
+                }
+              }
+            })
+          }
+        })  
+
+  },
+  validInput()
+  {
+    const that = this
+
+    this.selectComponent('#form').validate((valid, errors) => {
+      console.log('valid', valid, errors)
+      if (!valid) {
+        this.setData({        
+          isinputvalid:false
+        });
+        const firstError = Object.keys(errors)
+        if (firstError.length) {
+          this.setData({
+            error: errors[firstError[0]].message
+          })
+
+        }
+      } else {
+        this.setData({        
+          isinputvalid:true
+        });
+        wx.showModal({
+          title: '提示',
+          showCancel: false,
+          content: '校验通过，请点击提交申请',
+          success(res) {
+            if (res.confirm) {
+            
+            }
+          }
+        })
+      }
     })
   }
 })
