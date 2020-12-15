@@ -1,0 +1,35 @@
+/* pages/visitordetail/visitordetail.wxss */
+.kevincenter{
+  margin-top: 10rpx;
+  align-content: center;
+  text-align: center;
+
+}
+
+.kevinwarn{
+
+  color: chocolate;
+}
+
+.kevinsuc{
+  
+  color: rgb(39, 202, 167);
+}
+
+.kevinerr{
+
+  color: rgb(202, 39, 53);
+}
+
+.kevinwarnbtn{
+  background-color: chocolate;
+  color:white
+}
+.kevinborder {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #70bcf6;
+  border-radius: 2px;
+
+}

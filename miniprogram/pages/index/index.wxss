@@ -1,20 +1,21 @@
 /* pages/index/index.wxss */
 
 .container {
-font-family: Arial, Helvetica, sans-serif;
-font-size: 14rpx;
-will-change: 100%;
-height: 100%;
-display: flex;
-color: #333;
-padding-bottom: 50rpx;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14rpx;
+  will-change: 100%;
+  height: 100%;
+  display: flex;
+  color: #333;
+  padding-bottom: 50rpx;
 }
 
-.userinfo{
+.userinfo {
   height: 120rpx;
   margin-top: 0rpx;
 
 }
+
 .userinfo-avatar {
 
   /* height: 50rpx; */
@@ -30,35 +31,37 @@ padding-bottom: 50rpx;
   width: 100rpx;
 }
 
-.recentorderinfo{
+.recentorderinfo {
   padding-top: 15rpx;
-  
+
 }
-.getorder{
+
+.getorder {
   font-size: 32rpx;
   text-align: center;
   margin-top: 30rpx;
 }
 
-.notgetorder{
+.notgetorder {
   font-size: 32rpx;
   text-align: center;
   margin-top: 30rpx;
 }
 
 
-.commontext{
+.commontext {
   font-size: 24rpx;
   text-align: center;
   margin-top: 30rpx;
 }
 
-.neworder{
+.neworder {
   width: 60%;
   margin-top: 50rpx;
 
 }
-.changetobfr{
+
+.changetobfr {
   width: 60%;
   margin-top: 30rpx;
 
@@ -68,6 +71,7 @@ padding-bottom: 50rpx;
   padding: 40px 40px 5px;
   text-align: center;
 }
+
 .index-desc {
   margin-top: 10px;
   color: var(--weui-FG-1);
@@ -76,7 +80,7 @@ padding-bottom: 50rpx;
 }
 
 .weui-slidecells {
-  margin:8px;
+  margin: 8px;
 }
 
 .weui-slidecell {
@@ -85,4 +89,42 @@ padding-bottom: 50rpx;
   padding: 26px;
   line-height: 1.4;
   font-size: 17px;
+}
+
+.kevinborder {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #70bcf6;
+  border-radius: 2px;
+
+}
+
+.kevinsuc{
+  /* margin-right: 10rpx; */
+  max-width: 24px;
+  width: 24px;
+  height: 24px;
+  background-color: #1AAD19;
+  position:absolute;right:10px;
+}
+.kevinerr{
+  /* margin-right: 10rpx; */
+  max-width: 24px;
+  width: 24px;
+  height: 24px;
+  background-color: #ad1932;
+  position:absolute;right:10px;
+}
+.kevinwait{
+  /* margin-right: 10rpx; */
+  max-width: 24px;
+  width: 24px;
+  height: 24px;
+  background-color: #3b78e9;
+  position:absolute;right:10px;
+}
+.kevinrow{
+  display: flex;
+ 
 }

@@ -3,8 +3,8 @@
     "pages/index/index",
     "pages/hisinfo/hisinfo",
     "pages/neworder/neworder",
-    "pages/iminterviewee/iminterviewee"
-
+    "pages/iminterviewee/iminterviewee",
+    "pages/visitordetail/visitordetail"
   ],
   "tabBar": {
    

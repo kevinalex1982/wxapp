@@ -4,20 +4,20 @@
 @import "../common/common.wxss";
 
 .page-section{
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 }
 
 /* reset */
 page {
   background-color: var(--weui-BG-1);
-  height: 100%;
+
   /* font-size: 16px; */
   font-size: 16px;
   line-height: 1.6;
   color: var(--weui-FG-0);
   display: flex;
   justify-content: center;
-  padding-bottom: 50px;
+  padding-bottom: 150px;
 }
 page>view {
   width: 100vw;
@@ -279,4 +279,9 @@ input {
 
   color: #2782D7;
   font-size: 34rpx;
+}
+
+.kevinbottom{
+  margin-bottom: 150rpx;
+  /* padding-bottom: 150rpx; */
 }

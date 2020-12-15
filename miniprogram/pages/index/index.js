@@ -19,7 +19,10 @@ Page({
     hasrecentorder: false,
     initstatus: 0, //0不加载  1加载访客 2加载被访人
     showed: false,
-    BFRApprvestatus: -1
+    BFRApprvestatus: -1,
+    neworderforbfrarray: [],
+    neworderbfrarray: [],
+    mgrPhone: ""
   },
 
   /**
@@ -254,11 +257,52 @@ Page({
       })
     }
   },
+  setInitStatusTwo() {
+    this.setData({
+      initstatus: 2
+    })
+    this.getNewOrdersForBFR()
+  },
+  getNewOrdersForBFR() {
+    // 调用函数时，传入new Date()参数，返回值是日期和时间
+    var curdate = new Date();
+    const that = this
+    // curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000 * 5);
+    var time = util.formatTime(curdate);
+    //console.log(time)
+    db.collection("VisitorsInfo")
+      .where({
+        bfrPhone: that.data.mgrPhone,
+        createdtime: _.gte(time)
+      })
+      .orderBy("createdtime", "asc")
+      .get()
+      .then((res) => {
+        console.log("order")
+        console.log(res.data)
+        wx.hideLoading()
+        if (res.data.length > 0) {
+
+          this.setData({
+            hasrecentorderforbfr: true,
+            neworderforbfrarray: res.data
+          })
+        } else {
+          this.setData({
+            hasrecentorderforbfr: false,
+            neworderforbfrarray: []
+          })
+        }
+
+      }).catch(err => {
+        console.error(err)
+      });
+  },
   getDataInit() {
     var that = this
     console.log('getDataInit')
     this.getDataRefresh()
-    
+
   },
   getDataRefresh() {
     wx.showLoading({
@@ -289,8 +333,7 @@ Page({
               // "iconPath": "images/temps/cam2.png",
               // "selectedIconPath": "images/temps/cam3.png"
             })
-            if (res.data[0].MsgReceviced == 0)
-            {
+            if (res.data[0].MsgReceviced == 0) {
               wx.showModal({
                 title: '提示',
                 content: '您之前成为被访者的申请已被驳回',
@@ -326,8 +369,9 @@ Page({
             }
           } else if (res.data[0].ApproveStatus == 1) {
             this.setData({
-              initstatus: 2
+              mgrPhone: res.data[0].PersonPhone
             })
+            this.setInitStatusTwo()
             wx.setTabBarItem({
               index: 0,
               "text": "近期申请",
@@ -338,7 +382,7 @@ Page({
 
             wx.getSetting({
               withSubscriptions: true,
-              success(res) {              
+              success(res) {
 
                 console.log(res.subscriptionsSetting)
                 if (res.subscriptionsSetting.mainSwitch == false) {
@@ -388,7 +432,7 @@ Page({
                     wx.showModal({
                       title: '提示',
                       showCancel: false,
-                      content: '为了您能按时接收到访客消息，请手动点击订阅消息按钮',
+                      content: '为了您能按时接收到访客消息，请手动点击订阅消息按钮，选择<总是保持以上选择>会减少提醒',
                       success(res) {
                         if (res.confirm) {
 
@@ -398,13 +442,12 @@ Page({
                   }
 
                 }
-            
+
               }
             })
 
 
-            if (res.data[0].MsgReceviced == 0) {  
-            }
+            if (res.data[0].MsgReceviced == 0) {}
           } else {
             this.setInitStatusOne()
             wx.setTabBarItem({
@@ -516,6 +559,101 @@ Page({
       }
     })
   },
+  visitordetail(e) {
+    console.log(e.currentTarget.id)
+    console.log(e)
+
+    wx.navigateTo({
+      url: '../visitordetail/visitordetail?visitorid='+e.currentTarget.id,
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        acceptDataFromOpenedPage: function (data) {
+          console.log(data)
+        },
+        someEvent: function (data) {
+          console.log(data)
+        }
+      },
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', {
+          data: 'test'
+        })
+      }
+    })
+  },
+  // longpressbfr(e) {
+  //   console.log(e.currentTarget.id)
+  //   console.log(e)
+
+  //   const that = this
+  //   wx.showActionSheet({
+  //     itemList: ['通过审核', '拒绝'],
+  //     success(res) {
+  //       console.log(res.tapIndex)
+  //       if (res.tapIndex == 0) {
+  //         db.collection('VisitorsInfo').doc(e.currentTarget.id).update({
+  //             // data 传入需要局部更新的数据
+  //             data: {
+  //               // 表示将 done 字段置为 true
+  //               approveStatus: 1
+  //             }
+  //           })
+  //           .then(res => {
+  //             console.log(res)
+
+  //             wx.showModal({
+  //               title: '提示',
+  //               showCancel: false,
+  //               content: '批准成功',
+  //               success(res) {
+  //                 if (res.confirm) {
+  //                   that.getDataRefresh()
+  //                 }
+  //               }
+  //             })
+
+  //             // output: res.result === 3
+  //           }).catch(err => {
+  //             console.log(err)
+  //             // handle error
+  //           })
+  //       }else if(res.tapIndex==1)
+  //       {
+  //         db.collection('VisitorsInfo').doc(e.currentTarget.id).update({
+  //           // data 传入需要局部更新的数据
+  //           data: {
+  //             // 表示将 done 字段置为 true
+  //             approveStatus: 2
+  //           }
+  //         })
+  //         .then(res => {
+  //           console.log(res)
+
+  //           wx.showModal({
+  //             title: '提示',
+  //             showCancel: false,
+  //             content: '您拒绝他访问',
+  //             success(res) {
+  //               if (res.confirm) {
+  //                 that.getDataRefresh()
+  //               }
+  //             }
+  //           })
+
+  //           // output: res.result === 3
+  //         }).catch(err => {
+  //           console.log(err)
+  //           // handle error
+  //         })
+  //       }
+  //     },
+  //     fail(res) {
+  //       console.log(res.errMsg)
+  //     }
+  //   })
+
+  // },
   sendmsg() {
     var curdate = new Date();
     var time1 = util.formatDate(curdate, "yyyy-MM-dd HH:mm:ss");
@@ -575,7 +713,7 @@ Page({
       }
     })
   },
-  
+
   // guideOpenSubscribeMessage() {
   //   //引导用户，手动引导用户去设置页开启，
   //   this.$invoke('Modals', '__modalConfirm__', [

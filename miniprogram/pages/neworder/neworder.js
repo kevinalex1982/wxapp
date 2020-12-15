@@ -1,6 +1,9 @@
 // pages/neworder/neworder.js
 var util = require('../../utils/utils');
 const app = getApp()
+const db = wx.cloud.database();
+var senddata = {}
+var bfrwxopenid = "";
 Page({
 
   /**
@@ -10,7 +13,7 @@ Page({
     date: '2020-11-01',
     bigImg: '../../images/plus.png', //默认图片，设置为空也可以
     selImgCloudID: '',
-    isinputvalid:false,
+
     formData: {
 
     },
@@ -115,7 +118,6 @@ Page({
     // 再通过setData更改Page()里面的data，动态更新页面的数据
     this.setData({
       date: time,
-      isinputvalid:false
     });
 
 
@@ -179,61 +181,53 @@ Page({
     let that = this;
 
     //把图片存到users集合表
-    const db = wx.cloud.database();
-    console.log("that.selImgCloudID")
-    console.log(that.data.selImgCloudID)
-    if (that.selImgCloudID == '') {
-      wx.showToast({
-        title: '必须选择照片',
-        'icon': 'none',
-        duration: 3000
-      })
-    } else {
-      var senddata = {
-        wxOpenid: app.globalData.openid,
-        createdtime: that.data.date,
-        personName: that.data.formData.name,
-        personCorp: that.data.formData.corp,
-        personPhone: that.data.formData.mobile,
-        personIdcard: that.data.formData.idcard,
-        personImgCloudID: that.data.selImgCloudID,
-        bfrName: that.data.formData.bfrname,
-        bfrPhone: that.data.formData.bfrmobile,
-        approveStatus: 0
 
-      };
-      console.log("senddata")
-      console.log(senddata)
-      db.collection("VisitorsInfo").add({
-        data: senddata,
-        success: function () {
-          wx.showModal({
-            title: '提示',
-            content: '申请成功',
-            showCancel: false,
-            success(res) {
-              if (res.confirm) {
-                wx.navigateBack();
-              }
+
+    senddata = {
+      wxOpenid: app.globalData.openid,
+      createdtime: that.data.date,
+      personName: that.data.formData.name,
+      personCorp: that.data.formData.corp,
+      personPhone: that.data.formData.mobile,
+      personIdcard: that.data.formData.idcard,
+      personImgCloudID: that.data.selImgCloudID,
+      bfrName: that.data.formData.bfrname,
+      bfrPhone: that.data.formData.bfrmobile,
+      approveStatus: 0
+
+    };
+    console.log("senddata")
+    console.log(senddata)
+    db.collection("VisitorsInfo").add({
+      data: senddata,
+      success: function () {
+        wx.showModal({
+          title: '提示',
+          content: '申请成功',
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              that.sendmsg()
             }
-          })
+          }
+        })
 
-        },
-        fail: function () {
-          wx.showModal({
-            title: '提示',
-            showCancel: false,
-            content: '申请失败',
-            success(res) {
-              if (res.confirm) {
+      },
+      fail: function () {
+        wx.showModal({
+          title: '提示',
+          showCancel: false,
+          content: '申请失败',
+          success(res) {
+            if (res.confirm) {
 
-              }
             }
-          })
-        }
-      });
+          }
+        })
+      }
+    });
 
-    }
+
 
 
     // this.selectComponent('#form').validateField('mobile', (valid, errors) => {
@@ -250,62 +244,79 @@ Page({
   },
   subscribemsgvisitor() {
     const that = this
-        wx.requestSubscribeMessage({
-          tmplIds: ['vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg'],
-          success(res) {
-            console.log('success')
-            console.log(res)
-            if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "accept") {
-              wx.showModal({
-                title: '提示',
-                showCancel: false,
-                content: '您已经订阅了消息，等待批复后得到消息',
-                success(res) {
-                  if (res.confirm) {
-                    that.submitForm()
-                  }
-                }
-              })
-            } else if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "reject") {
-              wx.showModal({
-                title: '提示',
-                showCancel: false,
-                content: '您选择不订阅消息，请注意查看批复',
-                success(res) {
-                  if (res.confirm) {
-                    that.submitForm()
-                  }
-                }
-              })
-            }
-          },
-          fail(error) {
-            console.log('error')
-            console.log(error)
-            wx.showModal({
-              title: '提示',
-              showCancel: false,
-              content: '订阅消息出错，请注意手动查看批复',
-              success(res) {
-                if (res.confirm) {
-                  that.submitForm()
-                }
-              }
-            })
-          }
-        })  
+    wx.requestSubscribeMessage({
+      tmplIds: ['vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg'],
+      success(res) {
+        console.log('success')
+        console.log(res)
+        if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "accept") {
+
+        } else if (res["vZXqI0mxDDixhGMlANInkZWUcfSCKqhxwSKjLGP9IKg"] == "reject") {
+
+        }
+        that.validInput()
+      },
+      fail(error) {
+        console.log('error')
+        console.log(error)
+        that.validInput()
+      }
+    })
 
   },
-  validInput()
-  {
+  sendmsg() {
+    var curdate = new Date();
+    var time1 = util.formatDate(curdate, "yyyy-MM-dd HH:mm:ss");
+    console.log(curdate)
+    console.log(time1)
+    const that = this
+    wx.cloud.callFunction({
+      // 要调用的云函数名称
+      name: 'sendMsgToBfr',
+      // 传递给云函数的event参数
+      data: {
+        wxopenid: bfrwxopenid,
+        personname: senddata.personName,
+        requesttime: time1
+      }
+    }).then(res => {
+      console.log(res)
+      if (res.result.errCode != 0) {
+        wx.showModal({
+          title: '提示',
+          showCancel: false,
+          content: '对方并没有实时接收到这个消息，您最好微信或者电话通知对方批准您的申请',
+          success(res) {
+            if (res.confirm) {
+              wx.navigateBack();
+            }
+          }
+        })
+      } else {
+        wx.navigateBack();
+      }
+      // output: res.result === 3
+    }).catch(err => {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '调用云函数失败，您的申请已提交，对方不一定能收到该消息，请联系对方让对方审批',
+        success(res) {
+          if (res.confirm) {
+            wx.navigateBack();
+          }
+        }
+      })
+      // handle error
+    })
+  },
+  validInput() {
     const that = this
 
     this.selectComponent('#form').validate((valid, errors) => {
       console.log('valid', valid, errors)
       if (!valid) {
-        this.setData({        
-          isinputvalid:false
-        });
+
         const firstError = Object.keys(errors)
         if (firstError.length) {
           this.setData({
@@ -314,19 +325,57 @@ Page({
 
         }
       } else {
-        this.setData({        
-          isinputvalid:true
-        });
-        wx.showModal({
-          title: '提示',
-          showCancel: false,
-          content: '校验通过，请点击提交申请',
-          success(res) {
-            if (res.confirm) {
-            
-            }
-          }
-        })
+
+        console.log("that.selImgCloudID")
+        console.log(that.data.selImgCloudID)
+        if (that.data.selImgCloudID == '') {
+          wx.showToast({
+            title: '必须选择照片',
+            'icon': 'none',
+            duration: 3000
+          })
+        } else {
+
+          console.log(that.data.formData.bfrmobile)
+
+          db.collection("PersonMgrInfo")
+            .where({
+              PersonPhone: that.data.formData.bfrmobile
+            })
+            .get()
+            .then((res) => {
+              console.log(res)
+              if (res.data.length > 0) {
+
+                bfrwxopenid = res.data[0].WxOpenid
+                that.submitForm()
+              } else {
+                wx.showModal({
+                  title: '提示',
+                  showCancel: false,
+                  content: '您填写的被访人并不在我们的管理系统中，请核实后填写',
+                  success(res) {
+                    if (res.confirm) {
+                      bfrwxopenid = ""
+                    }
+                  }
+                })
+              }
+            }).catch((err) => {
+              wx.showModal({
+                title: '错误',
+                showCancel: false,
+                content: '请联系管理员:' + err,
+                success(res) {
+                  if (res.confirm) {
+                    bfrwxopenid = ""
+                  }
+                }
+              })
+            })
+
+        }
+
       }
     })
   }
