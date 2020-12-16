@@ -1,5 +1,6 @@
 <!--pages/index/index.wxml-->
 <view class="container">
+
   <!-- <view class="index-hd">
   <button plain open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="userinfo-avatar "
       style="background-image: url({{avatarUrl}})" size="mini"></button>
@@ -34,9 +35,9 @@
     <view wx:if="{{  hasrecentorder==false}}" class="notgetorder">您没有有效预约,可以</view>
   </view>
 
-      <view class="changetobfr" wx:if="{{initstatus ==2}}">
+      <!-- <view class="changetobfr" wx:if="{{initstatus ==2}}">
         <button type="primary" bindtap="subscribemsgbfr">订阅来访消息</button>
-      </view>
+      </view> -->
    
   <view wx:if="{{initstatus ==2}}" class="recentorderinfo">
     <view class="weui-panel weui-panel_access" wx:if="{{ hasrecentorderforbfr}}">

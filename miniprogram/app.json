@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/proshow/proshow",
     "pages/index/index",
     "pages/hisinfo/hisinfo",
     "pages/neworder/neworder",
