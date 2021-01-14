@@ -2,40 +2,66 @@
 <import src="../common/head.wxml" />
 
 <view class="page" data-weui-theme="{{theme}}">
+
   <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
 
   <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+    <view class="ordertipcontainer" wx:if="{{showtip=='true'}}">
+      <view class="ordertipimgleftcontainer">
+        <image class="ordertipimgleft" style="width:48rpx;height:48rpx" src="../../images/pageimg/neworder/tip.png">
+        </image>
+      </view>
+      <view class="ordertiptxt">
+        预约信息，提交后需要等待被访者审批反馈
+      </view>
+      <view class="ordertipimgrightcontainer">
+        <image class="ordertipimgright" style="width:24rpx;height:24rpx" src="../../images/pageimg/neworder/del.png"
+          bindtap="hidetip">
+        </image>
+      </view>
+    </view>
+    <view class="blankdd"></view>
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">姓名</view>
+      <input bindinput="formInputChange" data-field="name" class=" rightinput" placeholder="请输入姓名(真实姓名)"
+        placeholder-class="rightinputplaceholder" />
+    </view>
 
-    <mp-cells title="个人信息">
-      <mp-cell prop="name" title="姓名" ext-class="">
-        <input bindinput="formInputChange" data-field="name" class="weui-input" placeholder="请输入姓名" />
-      </mp-cell>
-      <mp-cell prop="corp" title="公司" ext-class="">
-        <input bindinput="formInputChange" data-field="corp" class="weui-input" placeholder="请输入公司" />
-      </mp-cell>
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">公司</view>
+      <input bindinput="formInputChange" data-field="corp" class=" rightinput" placeholder="请输入公司"
+        placeholder-class="rightinputplaceholder" />
+    </view>
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">手机号</view>
+      <input bindinput="formInputChange" data-field="mobile" class=" rightinput" placeholder="请输入手机号"
+        placeholder-class="rightinputplaceholder" />
+    </view>
 
-      <mp-cell prop="mobile" title="手机号" ext-class=" ">
-        <input bindinput="formInputChange" data-field="mobile" type="number" class="weui-input" placeholder="请输入手机号" />
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">身份证</view>
+      <input bindinput="formInputChange" data-field="idcard" class=" rightinput" placeholder="请输入您的身份证号码"
+        placeholder-class="rightinputplaceholder" />
+    </view>
 
-      </mp-cell>
-
-      <mp-cell prop="idcard" title="身份证" ext-class="">
-        <input bindinput="formInputChange" class="weui-input" data-field="idcard" type="idcard"
-          placeholder="请输入您的身份证号码" />
-      </mp-cell>
-      <mp-cell title="人脸照片" ext-class="" >
-        <!-- <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
+  
+    <mp-cell title="人脸照片" ext-class="">
+      <!-- <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
           files="{{files}}" max-count="1" title="人脸照片" tips="上传提示"></mp-uploader> -->
-          <image class="personimg" bindtap='changeBigImg'  src='{{bigImg}}'></image>
-      </mp-cell>
-     <view class="tip-text-1">照片需包含人脸，否则无法审核</view> 
-      <mp-cell prop="date" title="访问日期" ext-class="">
-        <picker data-field="date" mode="date" value="{{date}}" bindchange="bindDateChange">
-          <view class="weui-input">{{date}}</view>
-        </picker>
-      </mp-cell>
+      <image class="personimg" bindtap='changeBigImg' src='{{bigImg}}'></image>
+    </mp-cell>
+    <view class="tip-text-1">照片需包含人脸，否则无法审核</view>
+    <mp-cell prop="date" title="访问日期" ext-class="">
+      <picker data-field="date" mode="date" value="{{date}}" bindchange="bindDateChange">
+        <view class="weui-input">{{date}}</view>
+      </picker>
+    </mp-cell>
 
-    </mp-cells>
+
 
 
     <mp-cells title="被访人信息">
@@ -53,9 +79,9 @@
 
   </mp-form>
 
-  <view  class="kevinbottom">
-    <button  class="weui-btn" type="primary" bindtap="subscribemsgvisitor">提交申请</button>
- 
+  <view class="kevinbottom">
+    <button class="weui-btn" type="primary" bindtap="subscribemsgvisitor">提交申请</button>
+
   </view>
 
 </view>

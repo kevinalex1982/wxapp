@@ -2,13 +2,28 @@
 <view class="container">
 
   <!-- <view class='kevinback'></view> -->
-  　<image class='kevinback' src="../../images/back1.jpg" mode="widthFix"></image>
+  　<image class='kevinback' src="../../images/pageimg/index/backindex.png" mode="aspectFill"></image>
   <!-- 　<text class="kevinbtngetin" bindtap="getinsys">进入系统</text> -->
- 
-    <view class="txtview" >欢迎使用自助访客系统</view>
 
 
-  <view class="mintxtview" >这里是关于您系统的说明，可以多行这里是关于您系统的说明，可以多行这里是关于您系统的说明，可以多行这里是关于您系统的说明，可以多行这里是关于您系统的说明，可以多行</view>
-  <button wx:if="{{showbtn ==1}}" type="primary" bindtap="subscribemsgbfr" class="kevingetin">进入系统</button>
-  <button wx:if="{{showbtn ==2}}" type="primary" bindtap="subscribemsgvisitor" class="kevingetin">进入系统</button>
+
+
+  <view class="btncontainer">
+    <view style="width:70vw;height:12vw" bindtap="subscribemsgvisitor" class="kevingetin1"
+      disabled="{{isloadcompleted == false}}">
+      <view class="btn_img_container">
+        <image class="img_self" style="width:10vw;height:10vw" src="../../images/pageimg/index/1.png"></image>
+      </view>
+      <view class="getin1txt">我是访客</view>
+    </view>
+    <view style="width:70vw;height:12vw" bindtap="subscribemsgbfr" class="kevingetin2"
+      disabled="{{isloadcompleted == false}}">
+      <view class="btn_img_container">
+        <image class="img_self" style="width:10vw;height:10vw" src="../../images/pageimg/index/2.png"></image>
+      </view>
+
+      <view class="getin2txt">被访人员</view>
+    </view>
+  </view>
+
 </view>

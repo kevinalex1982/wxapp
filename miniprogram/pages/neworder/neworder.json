@@ -1,6 +1,6 @@
 {
   "component": true,
-  "navigationBarTitleText": "预约信息采集",
+  "navigationBarTitleText": "我要预约",
 
   "usingComponents": {
     "mp-form-page": "weui-miniprogram/form-page/form-page",

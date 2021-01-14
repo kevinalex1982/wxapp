@@ -1,0 +1,241 @@
+
+
+.visitorcontainer{
+height: 100vh;
+width: 100vw;
+position: relative;
+background-color: #f6f6f6;
+}
+.visitoritemcontainerBack{
+  max-height: 91vh;
+  height: 100vh;
+  width: 100%;
+  /* border: 1px #0c2ce2 solid; */
+  overflow: auto;
+  /* background-color: #1f74f3; */
+}
+
+.visitornothasitem{
+  margin-top: 0.5vh;
+  max-height: 90.5vh;
+  height: 90.5vh;
+  width: 100%;
+  background-color: #ffffff;
+}
+.imagenothasitem{
+  margin-top: 80rpx;
+  width: 474rpx;
+  height: 470rpx;
+  margin-left: 138rpx;
+}
+
+
+.bottombar{
+  /* position: absolute;
+  top: 90vh; */
+  height: 9vh;
+  width: 100%;
+  /* border: 1px #e20ca2 solid; */
+  background-color: #FAFAFB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yuyuebtncontainer
+{
+  position: absolute;
+  top: 81vh;
+  width: 42.7vw;
+   left: 29vw; 
+  height: 10.7vw;
+  /* border: 1px #73e20c solid; */
+  background-color: #C20018;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 18rpx  #570A0A; 
+}
+.img_btn_txt{
+  color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 5rpx;
+}
+
+.bottombaritemleft{
+  float: left;
+  height: 5.6vh;
+  width: 50%;
+  border-right: 1px #97979719 solid;
+  /* border: 1px #73e20c solid;  */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottombaritemright{
+  float: right;
+  height: 5.6vh;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottombaritemimg{
+  float: left;
+  width: 40%; 
+}
+
+.img_self{
+  float: right;
+}
+
+.bottombaritemseltxt{
+  float: left;
+  width: 57%;
+  letter-spacing: 3rpx;
+  margin-left: 3%;
+  text-align: left;
+  color: #C20018;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.bottombaritemnotseltxt{
+  float: left;
+  width: 57%;
+  letter-spacing: 3rpx;
+  margin-left: 3%;
+  text-align: left;
+  color: #999999;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.visitoritemcontainer{
+  width: 670rpx;
+  margin-left: 40rpx;
+  background-color: #ffffff;
+  height: 220rpx;
+  margin-top: 24rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 48rpx  #0000000f; 
+  /* border: 1px #73e20c solid;  */
+}
+
+.visitoritemcontainerleftborder{
+  float: left;
+  width: 164rpx;
+  height: 220rpx;
+  /* border: 1px #73e20c solid; */
+  /* background-color: rgb(6, 17, 114); */
+}
+.visitorimginitemcontainer{
+  margin-left: 24rpx;
+  margin-top: 24rpx;
+  background-color: red;
+}
+
+.visitoritemcontainerrightborder{
+  float: right;
+  width: 506rpx;
+  height: 220rpx;
+  /* border: 1px #1808f1 solid; */
+  /* background-color: teal; */
+}
+
+.bfrnameinrightborder{
+  float: left;
+  color:#222222 ;
+  font-size: 32rpx;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 30rpx;
+  width: 200rpx;
+  height: 44rpx;
+ 
+}
+
+.apprvestatusinrightborder{
+  float: right;
+  
+  font-size: 28rpx;
+  text-align: right;
+  margin-top: 34rpx;
+  margin-right:24rpx ;
+  width: 200rpx;
+  height: 40rpx;
+}
+
+.visittimelabelinrightborder{
+  float: left;
+  color:#6A6A6A ;
+  font-size: 28rpx;
+  text-align: left;
+  margin-top: 28rpx;
+  width: 130rpx;
+  height: 32rpx;
+}
+.visittimevalinrightborder{
+  float: left;
+  color:#ABABAB ;
+  font-size: 28rpx;
+  text-align: left;
+  margin-top: 28rpx;
+  width: 302rpx;
+  height: 32rpx;
+
+}
+
+
+.bfrphonelabelinrightborder{
+  float: left;
+  color:#6A6A6A ;
+  font-size: 28rpx;
+  text-align: left;
+  margin-top: 22rpx;
+  width: 130rpx;
+  height: 32rpx;
+}
+.bfrphonevalinrightborder{
+  float: left;
+  color:#ABABAB ;
+  font-size: 28rpx;
+  text-align: left;
+  margin-top: 22rpx;
+  width: 302rpx;
+  height: 32rpx;
+
+}
+.successstatuscls{
+  color:#15CB6D ;
+}
+.errorstatuscls{
+  color:#cb1515 ;
+}
+.normalstatuscls{
+  color:#3699FF ;
+}
+
+
+.nothasitemtxt{
+  margin-top: 42rpx;
+  width: 100%;
+  text-align: center;
+  color: #1E2432;
+  font-size: 44rpx;
+  font-weight: bold;
+}
+.nothasitemtxttip{
+  margin-top: 44rpx;
+  width: 504rpx;
+  margin-left: 123rpx;
+  text-align: center;
+  color: #BEC2CE;
+  font-size: 34rpx;
+
+}

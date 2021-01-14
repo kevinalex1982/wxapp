@@ -1,26 +1,59 @@
 <!--pages/hisinfo/hisinfo.wxml-->
 <view class="container">
-  <view class="recentorderinfo">
+  <view class="recentorderinfo" wx:if="{{roletype ==2}}">
     <view class="weui-panel weui-panel_access">
-      <view class="weui-panel__hd">申请记录</view>
+      <view class="weui-panel__hd">历史预约</view>
       <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="_id">
-        <mp-slideview buttons="{{item.slideButtons}}" icon="{{true}}" bindbuttontap="slideButtonTap">
-          <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
+
+        <view class="weui-media-box weui-media-box_appmsg kevinborder" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" id="{{item._id}}">
+            <view class="weui-media-box__title">{{item.bfrName}}
+              <view wx:if="{{item.approveStatus==0}}" class="kevinwait"></view>
+              <view wx:if="{{item.approveStatus==1}}" class="kevinsuc"></view>
+              <view wx:if="{{item.approveStatus==2}}" class="kevinerr"></view>
             </view>
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view class="weui-media-box__title">{{item.bfrName}}
-                <text wx:if="{{item.approveStatus==0}}">(待审核)</text>
-                <text wx:if="{{item.approveStatus==1}}">(通过审核)</text>
-                <text wx:if="{{item.approveStatus==2}}">(被拒绝)</text>
-              </view>
-              <view class="weui-media-box__desc">将于{{item.createdtime}} 访问： {{item.bfrName}} 联系方式：{{item.bfrPhone}}
-              </view>
+            <view class="weui-media-box__desc">将于{{item.createdtime}} 访问： {{item.bfrName}} 联系方式：{{item.bfrPhone}}
             </view>
-          </navigator>
-        </mp-slideview>
+          </view>
+        </view>
+
+
       </view>
     </view>
+
   </view>
-</view>
+
+  <view class="recentorderinfo" wx:if="{{roletype ==1}}">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">历史预约</view>
+      <view class="weui-panel__bd" wx:for="{{neworderarray}}" wx:key="_id">
+
+        <view class="weui-media-box weui-media-box_appmsg kevinborder" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="{{item.personImgCloudID}}" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg" id="{{item._id}}">
+            <view class="weui-media-box__title">{{item.bfrName}}
+              <view wx:if="{{item.approveStatus==0}}" class="kevinwait"></view>
+              <view wx:if="{{item.approveStatus==1}}" class="kevinsuc"></view>
+              <view wx:if="{{item.approveStatus==2}}" class="kevinerr"></view>
+            </view>
+            <view class="weui-media-box__desc">将于{{item.createdtime}} 访问您 他的联系方式：{{item.personPhone}}
+            </view>
+          </view>
+        </view>
+
+
+      </view>
+    </view>
+
+  </view>
+
+
+
+
+
+</view> 

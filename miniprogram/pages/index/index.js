@@ -267,7 +267,7 @@ Page({
     // 调用函数时，传入new Date()参数，返回值是日期和时间
     var curdate = new Date();
     const that = this
-    // curdate.setTime(curdate.getTime() + 24 * 60 * 60 * 1000 * 5);
+    //  curdate.setTime(curdate.getTime() - 24 * 60 * 60 * 1000 * 5);
     var time = util.formatTime(curdate);
     //console.log(time)
     db.collection("VisitorsInfo")
@@ -380,72 +380,7 @@ Page({
             })
 
 
-            // 不去看是否订阅了
-            // wx.getSetting({
-            //   withSubscriptions: true,
-            //   success(res) {
-
-            //     console.log(res.subscriptionsSetting)
-            //     if (res.subscriptionsSetting.mainSwitch == false) {
-            //       wx.showModal({
-            //         title: '提示',
-            //         content: '请点击右上角第二个设置按钮，设置该小程序的接收消息为接收',
-            //         showCancel: false,
-            //         success(resmodal) {
-            //           if (resmodal.confirm) {
-
-
-            //           }
-            //         }
-            //       })
-            //     } else {
-            //       if (res.subscriptionsSetting.itemSettings != null) {
-            //         if (res.subscriptionsSetting.itemSettings["zT41ZSW058Iag1XW_-qzkTMEGGZa53A5vgKJ4YVIvIA"] != null) {
-            //           if (res.subscriptionsSetting.itemSettings["zT41ZSW058Iag1XW_-qzkTMEGGZa53A5vgKJ4YVIvIA"] == "reject" ||
-            //             res.subscriptionsSetting.itemSettings["zT41ZSW058Iag1XW_-qzkTMEGGZa53A5vgKJ4YVIvIA"] == "ban") {
-            //             wx.showModal({
-            //               title: '提示',
-            //               content: '为了您能按时接收到访客消息，请手动点击订阅消息按钮',
-            //               showCancel: false,
-            //               success(resmodal) {
-            //                 if (resmodal.confirm) {
-
-
-            //                 }
-            //               }
-            //             })
-            //           }
-            //         } else {
-            //           wx.showModal({
-            //             title: '提示',
-            //             content: '为了您能按时接收到访客消息，请手动点击订阅消息按钮',
-            //             showCancel: false,
-            //             success(resmodal) {
-            //               if (resmodal.confirm) {
-
-
-            //               }
-            //             }
-            //           })
-            //         }
-
-            //       } else {
-            //         wx.showModal({
-            //           title: '提示',
-            //           showCancel: false,
-            //           content: '为了您能按时接收到访客消息，请手动点击订阅消息按钮，选择<总是保持以上选择>会减少提醒',
-            //           success(res) {
-            //             if (res.confirm) {
-
-            //             }
-            //           }
-            //         })
-            //       }
-
-            //     }
-
-            //   }
-            // })
+          
 
 
             if (res.data[0].MsgReceviced == 0) {}

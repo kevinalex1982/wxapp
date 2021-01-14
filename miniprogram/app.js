@@ -1,7 +1,7 @@
 //app.js
 App({
   onLaunch: function () {
-    
+
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -16,15 +16,50 @@ App({
     }
 
     this.globalData = {
-      openid:"",
-      bfrinfo:[]
+      openid: "",
+      bfrinfo: [],
+      ishide: false
     }
-  },getCloudOpenid: async function () {
-    return this.globalData.openid = this.globalData.openid || (await wx.cloud.callFunction({name: 'login'})).result.openid
+  },
+  getCloudOpenid: async function () {
+    return this.globalData.openid = this.globalData.openid || (await wx.cloud.callFunction({
+      name: 'login'
+    })).result.openid
   },
   //最佳方案。
   getOpenid: async function () {
     (this.globalData.openid = this.globalData.openid || wx.getStorageSync('openid')) || wx.setStorageSync('openid', await this.getCloudOpenid())
     return this.globalData.openid
   },
+  onHide() {
+
+    console.log('onhide')
+    this.globalData.ishide = true
+  },
+  onShow(ddd) {
+    console.log('onshow')
+console.log(ddd)
+    if (this.globalData.ishide == true) {
+      this.globalData.ishide = false
+      if (ddd.path != 'pages/proshow/proshow'&&ddd.path!= "pages/neworder/neworder") {
+        wx.reLaunch({
+          url: '/pages/proshow/proshow'
+        });
+      }
+    }
+  },
+  getCurrentPages: function () {
+    var pages = getCurrentPages(); //获取加载的页面
+    var currentPage = pages[pages.length - 1]; //获取当前页面的对象
+    var url = currentPage.route; //当前页面url
+    var options = currentPage.options; //获取url中所带的参数
+    //拼接url的参数
+    var currentPage = url + '?';
+    for (var key in options) {
+      var value = options[key]
+      currentPage += key + '=' + value + '&';
+    }
+    currentPage = currentPage.substring(0, currentPage.length - 1);
+    return currentPage;
+  }
 })

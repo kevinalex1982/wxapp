@@ -107,6 +107,7 @@
   height: 24px;
   background-color: #1AAD19;
   position:absolute;right:10px;
+  top: 5px;
 }
 .kevinerr{
   /* margin-right: 10rpx; */
@@ -115,6 +116,7 @@
   height: 24px;
   background-color: #ad1932;
   position:absolute;right:10px;
+  top: 5px;
 }
 .kevinwait{
   /* margin-right: 10rpx; */
@@ -123,6 +125,7 @@
   height: 24px;
   background-color: #3b78e9;
   position:absolute;right:10px;
+  top: 5px;
 }
 .kevinrow{
   display: flex;

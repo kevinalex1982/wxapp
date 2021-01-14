@@ -13,7 +13,7 @@ Page({
     date: '2020-11-01',
     bigImg: '../../images/plus.png', //默认图片，设置为空也可以
     selImgCloudID: '',
-
+    showtip:"true",
     formData: {
 
     },
@@ -43,10 +43,7 @@ Page({
         name: 'idcard',
         rules: {
           validator: function (rule, value, param, modeels) {
-            console.log(value)
-            console.log(rule)
-            console.log(param)
-            console.log(modeels)
+           
             if (!value || value.length !== 18) {
               return '身份证格式不正确'
             }
@@ -119,7 +116,19 @@ Page({
     this.setData({
       date: time,
     });
+    try {
+      var value = wx.getStorageSync('showtip')
+      if (value) {
+        this.setData({
+          showtip: value,
+        });
+      }
+    } catch (e) {
+      // Do something when catch error
+    }
 
+
+   
 
   },
 
@@ -377,6 +386,14 @@ Page({
         }
 
       }
+    })
+  },hidetip(){
+    wx.setStorage({
+      key:"showtip",
+      data:"false"
+    })
+    this.setData({
+      showtip:"false"
     })
   }
 })

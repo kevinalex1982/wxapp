@@ -1,9 +1,11 @@
 {
   "pages": [
+    "pages/neworder/neworder",
     "pages/proshow/proshow",
+    "pages/visitorinfo/visitorinfo",
     "pages/index/index",
     "pages/hisinfo/hisinfo",
-    "pages/neworder/neworder",
+
     "pages/iminterviewee/iminterviewee",
     "pages/visitordetail/visitordetail"
   ],
@@ -12,14 +14,14 @@
     "list": [{
       "text":"访客预约",
       "pagePath": "pages/index/index",
-      "iconPath": "images/temps/cam2.png",
-      "selectedIconPath": "images/temps/cam3.png"
+      "iconPath": "images/temps/shouye1.png",
+      "selectedIconPath": "images/temps/shouye1.png"
       
     },{
       "text":"申请记录",
       "pagePath": "pages/hisinfo/hisinfo",
-      "iconPath": "images/temps/point-light-gray.png",
-      "selectedIconPath": "images/temps/point-light-blue.png"
+      "iconPath": "images/temps/shouye2.png",
+      "selectedIconPath": "images/temps/shouye2.png"
     }],
     "color": "#000",
     "selectedColor": "#00f"
@@ -27,9 +29,9 @@
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#000000",
+    "navigationBarBackgroundColor": "#FFFFFFd3",
     "navigationBarTitleText": "访客预约",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",

@@ -2,56 +2,113 @@
 
 
 
-.container{
-  width:750rpx;
-  height:100vh;
-  position: absolute;
-  margin:0;
-  padding:0;
+.container {
+  width: 750rpx;
+  height: 100vh;
+  position: relative;
+  margin: 0;
+  padding: 0;
+
 
 }
-.kevinback
-{
-  background-size:cover;
- left: 0;
+
+.kevinback {
+  background-size: cover;
+  left: 0;
   border-radius: 2px;
   margin-top: 0px;
   padding: 0;
-  width:750rpx;
-  height:100%;
+  width: 750rpx;
+  height: 100%;
   background-repeat: no-repeat;
-  object-fit:fill ;
+  object-fit: fill;
   position: absolute;
 
 }
+
 /* .kevinbtngetin{
   position: absolute;
   top:10rpx;
   right:20rpx;
   color:#fff;
 } */
+.btncontainer {
+  top: 55vh;
+  position: absolute;
+}
 
-.kevingetin{
-  margin-top: 60vh;
+.kevingetin1 {
+  background-color: white;
+  
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  letter-spacing: 5rpx;
+
+}
+
+
+
+.kevingetin2 {
+
+  margin-top: 40rpx;
+  background-color: #FFFFFF16;
+  
+  border: 1px #FFFFFF solid;
+ 
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+.btn_img_container {
+  float: left;
+  width: 35%;
+
+
+
+}
+.img_self{
+  float: right;
+}
+.getin1txt{
+  color: #901313;
+  font-size: 34rpx;
+  float: left;
+  width: 55%;
+  letter-spacing: 5rpx;
+  margin-left: 10%;
+  text-align: left;
+  font-weight: bold;
+}
+.getin2txt{
+  float: left;
+  width: 55%;
+  letter-spacing: 5rpx;
+  margin-left: 10%;
+  text-align: left;
+  color: #FFFFFF;
+  font-size: 34rpx;
+  font-weight: bold;
+  
 }
 
 .txtview {
   width: 100%;
- left: 0;
+  left: 0;
   margin-right: 3px;
-  position:absolute;
+  position: absolute;
   margin-top: 10vh;
   text-align: center;
   font-size: 24px;
-  color: white;  
+  color: white;
 }
 
 .mintxtview {
   left: 15%;
   width: 70%;
-  position:absolute;
+  position: absolute;
   margin-top: 20vh;
   text-align: left;
   font-size: 12px;
-  color: white;  
+  color: white;
 }

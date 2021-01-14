@@ -1,0 +1,53 @@
+<view class="container">
+  <view class="visitorcontainer">
+    <view class="visitoritemcontainerBack" wx:if="{{neworderarray.length>0}}">
+      <view class="visitoritemcontainer" wx:for="{{neworderarray}}" wx:key="_id">
+        <view class="visitoritemcontainerleftborder">
+          <image class="visitorimginitemcontainer" style="width:110rpx;height:110rpx"
+            src="{{item.personImgCloudID}}"></image>
+        </view>
+        <view class="visitoritemcontainerrightborder">
+          <view class="bfrnameinrightborder">{{item.bfrName}}</view>
+          <view class="{{normalstatuscls}} apprvestatusinrightborder">{{item.approveStatus==0?"待审批":item.approveStatus==1?"已同意":"拒绝"}}</view>
+          <view class="visittimelabelinrightborder">访问时间:</view>
+          <view class="visittimevalinrightborder">2020-12-19 12:50:32</view>
+          <view class="bfrphonelabelinrightborder">联系方式:</view>
+          <view class="bfrphonevalinrightborder">13529398873</view>
+
+
+        </view>
+      </view>
+    </view>
+
+    <view class="visitornothasitem"  wx:else>
+      <image  class="imagenothasitem" style="width:474rpx;height:470rpx"
+            src="../../images/pageimg/nothas.png"></image>
+            <view class="nothasitemtxt">暂无访问计划</view>
+            <view class="nothasitemtxttip">当你预约访问时，你会在这里看到你的行程</view>
+    </view>
+    <view class="bottombar">
+      <view class="bottombaritemleft" bindtap="clickleftbottombar">
+        <view class="bottombaritemimg">
+          <image wx:if="{{selindex==0}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/xingchengsel.png"></image>
+          <image wx:if="{{selindex==1}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/xingchengnotsel.png"></image>
+        </view>
+        <view class="{{selindex==0?txtselcls:txtnotselcls}}">行程</view>
+      </view>
+      <view class="bottombaritemright" bindtap="clickrightbottombar">
+        <view class="bottombaritemimg">
+          <image wx:if="{{selindex==0}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/hisnotsel.png"></image>
+          <image wx:if="{{selindex==1}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/hissel.png"></image>
+        </view>
+        <view class="{{selindex==0?txtnotselcls:txtselcls}}">历史记录</view>
+      </view>
+    </view>
+    <view class="yuyuebtncontainer" wx:if="{{selindex==0}}" bindtap="buildNewOrder">
+      <view class="img_btn_txt">我要预约</view>
+    </view>
+
+  </view>
+</view>
