@@ -18,12 +18,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    await getApp().getCloudOpenid()
+    if (this.data.isloadcompleted == false) {
+      await getApp().getCloudOpenid()
+      this.getDataRefresh()
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 8000)
+    }
 
-    this.getDataRefresh()
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 8000)
+
   },
 
   /**
@@ -37,7 +40,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (this.data.isloadcompleted) {
+      this.getDataRefresh()
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 8000)
+    }
   },
 
   /**
@@ -106,15 +114,12 @@ Page({
 
       .get()
       .then((res) => {
-
+        console.log('PersonMgrInfo')
+        console.log(res.data)
         if (res.data.length > 0) {
 
           app.globalData.bfrinfo = res.data[0]
-          wx.hideLoading()
-          that.setData({
-            isloadcompleted: true
 
-          })
           if (res.data[0].ApproveStatus == 2) { //已经被拒绝
             that.setData({
               userrole: 2
@@ -129,14 +134,24 @@ Page({
               userrole: 3
             })
           }
-        } else { //没有申请过做被访人
+          wx.hideLoading()
           that.setData({
-            userrole: 0
+            isloadcompleted: true
+
           })
+        } else { //没有申请过做被访人
+
+          that.setData({
+            userrole: 0,
+            isloadcompleted: true
+          })
+          wx.hideLoading()
         }
       });
   },
   tobfr() {
+    console.log('this.data.userrole')
+    console.log(this.data.userrole)
     if (this.data.userrole == 0) {
       wx.navigateTo({
         url: '../iminterviewee/iminterviewee?optype=add',
@@ -156,24 +171,12 @@ Page({
           })
         }
       })
-     
+
     } else if (this.data.userrole == 1) {
-      wx.switchTab({
-        url: '../index/index',
-        events: {
-          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-          acceptDataFromOpenedPage: function (data) {
-            console.log(data)
-          },
-          someEvent: function (data) {
-            console.log(data)
-          }
-        },
-        success: function (res) {
-          // 通过eventChannel向被打开页面传送数据
-  
-        }
+      wx.reLaunch({
+        url: '../bfrinfo/bfrinfo',
       })
+      
     } else if (this.data.userrole == 2) {
       wx.showModal({
         title: '提示',
@@ -233,7 +236,7 @@ Page({
         }
       })
     }
-   
+
   },
   tovisitor() {
     wx.reLaunch({

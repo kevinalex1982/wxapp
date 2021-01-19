@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/neworder/neworder",
     "pages/proshow/proshow",
+    "pages/neworder/neworder",
     "pages/visitorinfo/visitorinfo",
+    "pages/bfrinfo/bfrinfo",
     "pages/index/index",
     "pages/hisinfo/hisinfo",
 

@@ -36,8 +36,8 @@
     </view>
     <view class="txtcontainer">
       <view class="leftneedstar">*</view>
-      <view class="labelforinput">手机号</view>
-      <input bindinput="formInputChange" data-field="mobile" class=" rightinput" placeholder="请输入手机号"
+      <view class="labelforinput">手机</view>
+      <input bindinput="formInputChange" data-field="mobile" type="number" class=" rightinput" placeholder="请输入手机号"
         placeholder-class="rightinputplaceholder" />
     </view>
 
@@ -48,40 +48,64 @@
         placeholder-class="rightinputplaceholder" />
     </view>
 
-  
-    <mp-cell title="人脸照片" ext-class="">
-      <!-- <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}"
-          files="{{files}}" max-count="1" title="人脸照片" tips="上传提示"></mp-uploader> -->
-      <image class="personimg" bindtap='changeBigImg' src='{{bigImg}}'></image>
-    </mp-cell>
-    <view class="tip-text-1">照片需包含人脸，否则无法审核</view>
-    <mp-cell prop="date" title="访问日期" ext-class="">
+    <view class="img_selface_container">
+      <view class="labelforfaceimg">上传照片</view>
+      <view class="img_selface_in_container" wx:if="{{selImgCloudID==''}}" bindtap='changeBigImg'>
+        <view class="personimg_wait_container">
+          <image class="personimg_wait" style="width:58rpx;height:42rpx" bindtap='changeBigImg'
+            src='../../images/pageimg/neworder/takepic.png'></image>
+        </view>
+        <view class="labelfortakepic">添加照片</view>
+      </view>
+
+      <image wx:if="{{selImgCloudID!=''}}" class="personimg" mode="aspectFit"
+        style="width:160rpx;height:160rpx;max-height:220rpx" bindtap='changeBigImg' src='{{bigImg}}'></image>
+      <view class="righttip" wx:if="{{selImgCloudID==''}}">照片需包含人脸，否则无法审批</view>
+    </view>
+    <view class="txtcontainer">
+      <view class="leftneedstar"></view>
+      <view class="labelforinput">访问日期</view>
+
       <picker data-field="date" mode="date" value="{{date}}" bindchange="bindDateChange">
-        <view class="weui-input">{{date}}</view>
+        <view class=" rightinput">{{date}}</view>
       </picker>
-    </mp-cell>
+    </view>
 
 
 
 
-    <mp-cells title="被访人信息">
-      <mp-cell prop="bfrname" title="被访人姓名" ext-class="">
-        <input bindinput="formInputChange" data-field="bfrname" class="weui-input" placeholder="请输入被访人姓名" />
-      </mp-cell>
+    <view class="txtbfrtitle_container">
+      <image class="bfrimgtip" style="width:8rpx;height:42rpx" bindtap='changeBigImg'
+        src='../../images/pageimg/neworder/biaoshi.png'></image>
+      <view class="txtbfrtitle">被访人信息</view>
+    </view>
 
 
-      <mp-cell prop="bfrmobile" title="被访人手机号" ext-class=" ">
-        <input bindinput="formInputChange" data-field="bfrmobile" type="number" class="weui-input"
-          placeholder="请输入被访人手机号" />
 
-      </mp-cell>
-    </mp-cells>
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">姓名</view>
+      <input bindinput="formInputChange" data-field="bfrname" class=" rightinput" placeholder="请输入被访人姓名"
+        placeholder-class="rightinputplaceholder" />
+    </view>
 
+
+    <view class="txtcontainer">
+      <view class="leftneedstar">*</view>
+      <view class="labelforinput">手机</view>
+      <input bindinput="formInputChange" data-field="bfrmobile" type="number" class=" rightinput"
+        placeholder="请输入被访人手机号" placeholder-class="rightinputplaceholder" />
+    </view>
+
+
+
+    <view class="yuyuebtncontainer" bindtap="subscribemsgvisitor">
+      <view class="img_btn_txt">确认提交</view>
+    </view>
   </mp-form>
 
-  <view class="kevinbottom">
-    <button class="weui-btn" type="primary" bindtap="subscribemsgvisitor">提交申请</button>
 
-  </view>
+
+
 
 </view>

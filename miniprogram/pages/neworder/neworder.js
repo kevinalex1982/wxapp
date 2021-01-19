@@ -11,7 +11,7 @@ Page({
    */
   data: {
     date: '2020-11-01',
-    bigImg: '../../images/plus.png', //默认图片，设置为空也可以
+    bigImg: '', //默认图片，设置为空也可以
     selImgCloudID: '',
     showtip:"true",
     formData: {
@@ -81,7 +81,7 @@ Page({
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         let filePath = res.tempFilePaths[0];
         const name = Math.random() * 1000000;
-        const cloudPath = name + filePath.match(/\.[^.]+?$/)[0]
+        const cloudPath ="application/"+ name + filePath.match(/\.[^.]+?$/)[0]
         wx.cloud.uploadFile({
           cloudPath, //云存储图片名字
           filePath, //临时路径

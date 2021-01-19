@@ -8,16 +8,16 @@
 
 
 
-  <view class="btncontainer">
-    <view style="width:70vw;height:12vw" bindtap="subscribemsgvisitor" class="kevingetin1"
-      disabled="{{isloadcompleted == false}}">
+  <view class="btncontainer" wx:if="{{isloadcompleted}}">
+    <view  style="width:70vw;height:12vw" bindtap="subscribemsgvisitor" class="kevingetin1"
+     >
       <view class="btn_img_container">
         <image class="img_self" style="width:10vw;height:10vw" src="../../images/pageimg/index/1.png"></image>
       </view>
       <view class="getin1txt">我是访客</view>
     </view>
     <view style="width:70vw;height:12vw" bindtap="subscribemsgbfr" class="kevingetin2"
-      disabled="{{isloadcompleted == false}}">
+     >
       <view class="btn_img_container">
         <image class="img_self" style="width:10vw;height:10vw" src="../../images/pageimg/index/2.png"></image>
       </view>

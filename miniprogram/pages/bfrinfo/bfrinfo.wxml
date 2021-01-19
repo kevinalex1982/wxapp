@@ -1,0 +1,100 @@
+<view class="container">
+  <view class="bfrcontainer">
+    <view class="bfritemcontainerBack" wx:if="{{neworderforbfrarray.length>0 & selindex==0}}">
+      <view class="bfritemcontainer" wx:for="{{neworderforbfrarray}}" wx:key="_id" bindtap="open" id="{{item._id}}">
+        <view class="bfritemcontainerleftborder">
+          <image class="bfrimginitemcontainer" style="width:110rpx;height:110rpx" src="{{item.personImgCloudID}}"
+            data-id="{{item.personImgCloudID}}" catchtap="togglePopup">
+          </image>
+        </view>
+        <view class="bfritemcontainerrightborder" bindlongtap="longpress" id="{{item._id}}">
+          <view class="bfrnameinrightborder">{{item.personName}}</view>
+          <view class="{{normalstatuscls}} apprvestatusinrightborder">
+            {{item.approveStatus==0?"待审批":item.approveStatus==1?"已同意":"已拒绝"}}</view>
+          <view class="visittimelabelinrightborder">访问时间:</view>
+          <view class="visittimevalinrightborder">{{item.createdtime}}</view>
+          <view class="bfrphonelabelinrightborder">联系方式:</view>
+          <view class="bfrphonevalinrightborder">{{item.personPhone}}</view>
+
+
+        </view>
+      </view>
+    </view>
+    <view class="bfrnothasitem" wx:if="{{neworderforbfrarray.length==0 & selindex==0}}">
+      <image class="imagenothasitem" style="width:474rpx;height:470rpx" src="../../images/pageimg/nothas.png"></image>
+      <view class="nothasitemtxt">暂无预约</view>
+      <view class="nothasitemtxttip">当有访客预约时，你会在这里看到审批订单</view>
+    </view>
+    <view class="bfrnothasitem" wx:if="{{neworderforbfrarray.length==0 & selindex==1}}">
+      <image class="imagenothasitem" style="width:474rpx;height:470rpx" src="../../images/pageimg/nothas.png"></image>
+      <view class="nothasitemtxt">暂无历史记录</view>
+      <view class="nothasitemtxttip">当有访客预约时，你会在这里看到你的历史预约</view>
+    </view>
+
+    <view class="bfritemcontainerBack" wx:if="{{neworderforbfrarray.length>0 & selindex==1}}">
+      <view class="bfrhisitemcontainer" wx:for="{{neworderforbfrarray}}" wx:key="_id">
+        <image class="bfrhisitemcontainerimg" style="width:650rpx;height:266rpx;"
+          src=" {{item.approveStatus==0?waitcls:item.approveStatus==1?approvedcls:deniedcls}}">
+          <view class="bfrhisitemcontainerleftborder">
+            <image class="bfrhisimginitemcontainer" style="width:110rpx;height:110rpx" src="{{item.personImgCloudID}}">
+            </image>
+          </view>
+          <view class="bfrhisitemcontainerrightborder" id="{{item._id}}">
+            <view class="bfrnamehisinrightborder">{{item.bfrName}}</view>
+            <view class="visittimehislabelinrightborder">访问时间:</view>
+            <view class="visittimevalinrightborder">{{item.createdtime}}</view>
+            <view class="bfrphonehislabelinrightborder">联系方式:</view>
+            <view class="bfrphonehisvalinrightborder">{{item.bfrPhone}}</view>
+          </view>
+        </image>
+
+      </view>
+    </view>
+
+
+    <view class="bottombar">
+      <view class="bottombaritemleft" bindtap="clickleftbottombar">
+        <view class="bottombaritemimg">
+          <image wx:if="{{selindex==0}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/xingchengsel.png"></image>
+          <image wx:if="{{selindex==1}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/xingchengnotsel.png"></image>
+        </view>
+        <view class="{{selindex==0?txtselcls:txtnotselcls}}">预约</view>
+      </view>
+      <view class="bottombaritemright" bindtap="clickrightbottombar">
+        <view class="bottombaritemimg">
+          <image wx:if="{{selindex==0}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/hisnotsel.png"></image>
+          <image wx:if="{{selindex==1}}" class="img_self" style="width:64rpx;height:64rpx"
+            src="../../images/pageimg/visitorinfo/hissel.png"></image>
+        </view>
+        <view class="{{selindex==0?txtnotselcls:txtselcls}}">历史记录</view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <mp-half-screen-dialog bindbuttontap="buttontap" show="{{show}}" maskClosable="{{true}}" title="审核选择" tips="根据实际需要做选择"
+    buttons="{{buttons}}"></mp-half-screen-dialog>
+
+
+  <!-- <view class="zan-popup {{ showPopup ? 'zan-popup--show' : ''}}">
+    <view class="zan-popup__mask" bindtap="togglePopup"></view>
+    <view class="zan-popup__container popup-example--center">
+      <view class="zan-btns">
+        <image src='{{imageurl}}'></image>
+      </view>
+    </view>
+  </view> -->
+
+
+
+  <modal title="访客照片" hidden="{{!showPopup}}" bindconfirm="modalConfirm" bindcancel="modalCandel" no-cancel="true">
+    <view>
+      <image class="image" style="width:600rpx;height:400rpx" src="{{imageurl}}" mode='widthFix'></image>
+    </view>
+
+  </modal>
+</view>

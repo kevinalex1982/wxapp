@@ -1,29 +1,55 @@
 <view class="container">
   <view class="visitorcontainer">
-    <view class="visitoritemcontainerBack" wx:if="{{neworderarray.length>0}}">
+    <view class="visitoritemcontainerBack" wx:if="{{neworderarray.length>0 & selindex==0}}">
       <view class="visitoritemcontainer" wx:for="{{neworderarray}}" wx:key="_id">
         <view class="visitoritemcontainerleftborder">
-          <image class="visitorimginitemcontainer" style="width:110rpx;height:110rpx"
-            src="{{item.personImgCloudID}}"></image>
+          <image class="visitorimginitemcontainer" style="width:110rpx;height:110rpx" src="{{item.personImgCloudID}}">
+          </image>
         </view>
-        <view class="visitoritemcontainerrightborder">
+        <view class="visitoritemcontainerrightborder" bindlongtap="longpress" id="{{item._id}}">
           <view class="bfrnameinrightborder">{{item.bfrName}}</view>
-          <view class="{{normalstatuscls}} apprvestatusinrightborder">{{item.approveStatus==0?"待审批":item.approveStatus==1?"已同意":"拒绝"}}</view>
+          <view class="{{normalstatuscls}} apprvestatusinrightborder">
+            {{item.approveStatus==0?"待审批":item.approveStatus==1?"同意":"拒绝"}}</view>
           <view class="visittimelabelinrightborder">访问时间:</view>
-          <view class="visittimevalinrightborder">2020-12-19 12:50:32</view>
+          <view class="visittimevalinrightborder">{{item.createdtime}}</view>
           <view class="bfrphonelabelinrightborder">联系方式:</view>
-          <view class="bfrphonevalinrightborder">13529398873</view>
+          <view class="bfrphonevalinrightborder">{{item.bfrPhone}}</view>
 
 
         </view>
       </view>
     </view>
 
-    <view class="visitornothasitem"  wx:else>
-      <image  class="imagenothasitem" style="width:474rpx;height:470rpx"
-            src="../../images/pageimg/nothas.png"></image>
-            <view class="nothasitemtxt">暂无访问计划</view>
-            <view class="nothasitemtxttip">当你预约访问时，你会在这里看到你的行程</view>
+    <view class="visitornothasitem" wx:if="{{neworderarray.length==0 & selindex==1}}">
+      <image class="imagenothasitem" style="width:474rpx;height:470rpx" src="../../images/pageimg/nothas.png"></image>
+      <view class="nothasitemtxt">暂无历史记录</view>
+      <view class="nothasitemtxttip">当你行程完成时，你会在这里看到你的历史行程</view>
+    </view>
+
+    <view class="visitoritemcontainerBack" wx:if="{{neworderarray.length>0 & selindex==1}}">
+      <view class="visitorhisitemcontainer" wx:for="{{neworderarray}}" wx:key="_id">
+        <image class="visitorhisitemcontainerimg" style="width:650rpx;height:266rpx;"
+          src=" {{item.approveStatus==0?waitcls:item.approveStatus==1?approvedcls:deniedcls}}">
+          <view class="visitorhisitemcontainerleftborder">
+            <image class="visitorhisimginitemcontainer" style="width:110rpx;height:110rpx"
+              src="{{item.personImgCloudID}}"></image>
+          </view>
+          <view class="visitorhisitemcontainerrightborder" id="{{item._id}}">
+            <view class="bfrnamehisinrightborder">{{item.bfrName}}</view>         
+            <view class="visittimehislabelinrightborder">访问时间:</view>
+            <view class="visittimevalinrightborder">{{item.createdtime}}</view>
+            <view class="bfrphonehislabelinrightborder">联系方式:</view>
+            <view class="bfrphonehisvalinrightborder">{{item.bfrPhone}}</view>
+          </view>
+        </image>
+
+      </view>
+    </view>
+
+    <view class="visitornothasitem" wx:if="{{neworderarray.length==0 & selindex==0}}">
+      <image class="imagenothasitem" style="width:474rpx;height:470rpx" src="../../images/pageimg/nothas.png"></image>
+      <view class="nothasitemtxt">暂无访问计划</view>
+      <view class="nothasitemtxttip">当你预约访问时，你会在这里看到你的行程</view>
     </view>
     <view class="bottombar">
       <view class="bottombaritemleft" bindtap="clickleftbottombar">

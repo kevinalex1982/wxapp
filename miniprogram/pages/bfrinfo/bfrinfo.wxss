@@ -1,11 +1,11 @@
-.visitorcontainer {
+.bfrcontainer {
   height: 100vh;
   width: 100vw;
   position: relative;
   background-color: #f6f6f6;
 }
 
-.visitoritemcontainerBack {
+.bfritemcontainerBack {
   max-height: 91vh;
   height: 100vh;
   width: 100%;
@@ -14,7 +14,7 @@
   /* background-color: #1f74f3; */
 }
 
-.visitornothasitem {
+.bfrnothasitem {
   margin-top: 0.5vh;
   max-height: 90.5vh;
   height: 90.5vh;
@@ -116,7 +116,7 @@
   font-weight: bold;
 }
 
-.visitoritemcontainer {
+.bfritemcontainer {
   width: 670rpx;
   margin-left: 40rpx;
   background-color: #ffffff;
@@ -127,7 +127,7 @@
   /* border: 1px #73e20c solid;  */
 }
 
-.visitorhisitemcontainer {
+.bfrhisitemcontainer {
   width: 650rpx;
   margin-left: 50rpx;
   background-color: #ffffff;
@@ -137,7 +137,7 @@
 
 }
 
-.visitorhisitemcontainerimg {
+.bfrhisitemcontainerimg {
   width: 650rpx;
   margin-left: 0rpx;
   height: 266rpx;
@@ -145,7 +145,7 @@
   position: relative;
 }
 
-.visitoritemcontainerleftborder {
+.bfritemcontainerleftborder {
   float: left;
   width: 164rpx;
   height: 220rpx;
@@ -154,7 +154,7 @@
   /* background-color: rgb(6, 17, 114); */
 }
 
-.visitorhisitemcontainerleftborder {
+.bfrhisitemcontainerleftborder {
   position: absolute;
   width: 164rpx;
   height: 266rpx;
@@ -162,7 +162,7 @@
   top: 0;
 }
 
-.visitorimginitemcontainer {
+.bfrimginitemcontainer {
   position: absolute;
   margin-top: 24rpx;
   margin-left: 24rpx;
@@ -171,7 +171,7 @@
 
 
 
-.visitorhisimginitemcontainer {
+.bfrhisimginitemcontainer {
   position: absolute;
   left: 24rpx;
   top: 44rpx;
@@ -179,7 +179,7 @@
   border-radius: 50%;
 }
 
-.visitoritemcontainerrightborder {
+.bfritemcontainerrightborder {
   float: right;
   width: 506rpx;
   height: 220rpx;
@@ -187,7 +187,7 @@
   /* background-color: teal; */
 }
 
-.visitorhisitemcontainerrightborder{
+.bfrhisitemcontainerrightborder{
 
   width: 506rpx;
   height: 266rpx;
